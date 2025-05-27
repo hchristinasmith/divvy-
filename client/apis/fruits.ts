@@ -1,9 +1,8 @@
 import request from 'superagent'
 
-const rootUrl = '/api/v1'
+const rootURL = new URL(`/api/v1`, document.baseURI)
 
-export function getFruits(): Promise<string[]> {
-  return request.get(rootUrl + '/fruits').then((res) => {
-    return res.body.fruits
-  })
+export async function getFruits() {
+  const response = await request.get(`${rootURL}/fruits`)
+  return response.body.fruits as string[]
 }
