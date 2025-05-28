@@ -1,9 +1,13 @@
 import type { Transaction } from '../../../models/transactions'
 import { transactionsByCategory } from './TxAnalysis'
+import Select from 'react-select'
 
 type Props = {
   transactions: Transaction[]
+  categories: {id:string, label:string}[]
+  onAssignCategory:(transactionId:string, categoryId:string) => void
 }
+
 
 export default function TransactionsByCategory({ transactions }: Props) {
   const grouped = transactionsByCategory(transactions)
