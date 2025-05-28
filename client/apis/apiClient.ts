@@ -1,5 +1,6 @@
 import request from 'superagent'
 import { Accounts } from '../../models/akahu'
+import type { Category } from '../../models/transactions'
 
 const rootURL = new URL(`/api/v1`, document.baseURI)
 
@@ -19,4 +20,15 @@ export async function grabTransactions(accountId?: string | null) {
     const response = await request.get(`${rootURL}/accounts/transactions`)
     return response.body
   }
+}
+
+export async function grabCategories() {
+  const response = await request.get(`${rootURL}/categories`)
+  return response.body
+}
+
+export async function updateTransactionCategory(transactionId: string, categoryId: string) {
+  const response = await request.patch(`${rootURL}/transactions/${transactionId}`)
+    .send({ categoryId })
+  return response.body
 }

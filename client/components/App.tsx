@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Sidebar from './Sidebar.tsx'
-import Dashboard from './Dashboard.tsx/Dashboard.tsx'
+import Dashboard from './Dashboard/Dashboard.tsx'
 import Settings from './Settings.tsx'
 import Wishlist from './Wishlist/WishlistDashboard.tsx'
 import Challenges from './Challenges/ChallengesDashboard.tsx'

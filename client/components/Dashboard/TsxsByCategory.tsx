@@ -2,11 +2,14 @@ import type { Transaction } from '../../../models/transactions'
 import { transactionsByCategory } from './TxAnalysis'
 import Select, { SingleValue } from 'react-select'
 
+type CategoryOption = { value: string; label: string }
+
 type Props = {
   transactions: Transaction[]
   categories: { id: string; label: string }[]
   onAssignCategory: (transactionId: string, categoryId: string) => void
 }
+//convert categories to react-select format
 
 export default function TransactionsByCategory({
   transactions,
@@ -14,6 +17,12 @@ export default function TransactionsByCategory({
   onAssignCategory,
 }: Props) {
   const grouped = transactionsByCategory(transactions)
+  const selectOptions: CategoryOption[] = (categories ?? []).map(
+    ({ id, label }) => ({
+      value: id,
+      label,
+    }),
+  )
 
   // Calculate total amount for each category
   const categoryTotals = Object.entries(grouped)
@@ -60,13 +69,11 @@ export default function TransactionsByCategory({
                     <div key={tx._id} className="uncategorized-item">
                       <span>{tx.description}</span>
                       <Select
-                        options={categories}
+                        options={selectOptions}
                         placeholder="Assign Category"
-                        onChange={(
-                          selected: SingleValue<{ id: string; label: string }>,
-                        ) => {
+                        onChange={(selected: SingleValue<CategoryOption>) => {
                           if (selected) {
-                            onAssignCategory(tx._id, selected!.id)
+                            onAssignCategory(tx._id, selected.value)
                           }
                         }}
                       />
