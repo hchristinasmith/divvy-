@@ -7,6 +7,14 @@ export default function Sidebar() {
       <NavLink to="/dashboard" className="divvy">
         Dashboard
       </NavLink>
+      <NavLink
+        to="/wishlist"
+        className={({ isActive }) =>
+          isActive ? 'nav-button active' : 'nav-button'
+        }
+      >
+        Wishlist
+      </NavLink>
       <hr className="full-width-divider" />
       <NavLink
         to="/challenges"
@@ -23,14 +31,6 @@ export default function Sidebar() {
         }
       >
         Settings
-      </NavLink>
-      <NavLink
-        to="/wishlist"
-        className={({ isActive }) =>
-          isActive ? 'nav-button active' : 'nav-button'
-        }
-      >
-        Wishlist
       </NavLink>
     </div>
   )

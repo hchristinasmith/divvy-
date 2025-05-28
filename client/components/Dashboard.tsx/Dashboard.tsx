@@ -37,7 +37,7 @@ function Dashboard() {
 
   return (
     <div>
-      <h1>Demo AKAHU Accounts</h1>
+      <h2>Select Account:</h2>
       <ul>
         {accountsData.items.map((account) => (
           <li key={account._id}>

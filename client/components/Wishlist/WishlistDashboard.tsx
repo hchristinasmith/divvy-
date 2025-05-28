@@ -50,7 +50,7 @@ export default function Wishlist() {
   }
   return (
     <div className="wishlist">
-      <h2>WISHLIST</h2>
+      <h2>Wishlist</h2>
       <div className="wishlist-form-container">
         <form onSubmit={handleAdd} className="wishlist-form">
           <div className="form-group">
