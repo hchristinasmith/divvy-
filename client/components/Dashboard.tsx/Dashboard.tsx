@@ -5,7 +5,7 @@ import Transactions from './txs.tsx'
 import TransactionSummary from './tsxSummary.tsx'
 import TransactionsByCategory from './TsxsByCategory.tsx'
 
-function App() {
+function Dashboard() {
   const [selectedAccountId, setSelectedAccountId] = useState<string | null>(
     null,
   )
