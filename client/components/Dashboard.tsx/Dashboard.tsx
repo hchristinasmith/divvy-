@@ -1,8 +1,8 @@
-import { grabAccounts, grabTransactions } from '../apiClient.ts'
+import { grabAccounts, grabTransactions } from '../../apis/apiClient.ts'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import Transactions from './txs.tsx'
-import TransactionSummary from './tsxSummary.tsx'
+import Transactions from './Txs.tsx'
+import TransactionSummary from './TsxSummary.tsx'
 import TransactionsByCategory from './TsxsByCategory.tsx'
 
 function Dashboard() {
@@ -54,14 +54,14 @@ function Dashboard() {
       )}
 
       {transactionsData && (
-        <>
+        <div>
           <TransactionSummary transactions={transactionsData.items} />
           <TransactionsByCategory transactions={transactionsData.items} />
           <Transactions transactions={transactionsData.items} />
-        </>
+        </div>
       )}
     </div>
   )
 }
 
-export default App
+export default Dashboard

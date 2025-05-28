@@ -35,42 +35,80 @@ export default function Wishlist() {
       }
       //add the item to the list
       setItems([...items, newItem])
-      //rest form fields
+      //reset form fields
       setName('')
       setPriority('medium')
       setUrl('')
     }
   }
+  
+  // function to remove an item from the wishlist
+  const handleRemove = (id: number) => {
+    // filter out the item with the matching id
+    const updatedItems = items.filter(item => item.id !== id)
+    setItems(updatedItems)
+  }
   return (
-    <div>
+    <div className="wishlist">
       <h2>WISHLIST</h2>
-      <form onSubmit={handleAdd}>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="What do you wish for? <3"
-        />
-        
-        <select value={priority}
-        onChange={(e) => setPriority(e.target.value as WishlistItem['priority'])}>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
+      <div className="wishlist-form-container">
+        <form onSubmit={handleAdd} className="wishlist-form">
+          <div className="form-group">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="What do you wish for? <3"
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <select 
+              value={priority}
+              onChange={(e) => setPriority(e.target.value as WishlistItem['priority'])}
+            >
+              <option value="low">Low Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="high">High Priority</option>
+            </select>
+          </div>
 
-        <button type="submit">blow a wish</button>
+          <div className="form-group">
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="Item URL (optional)"
+            />
+          </div>
 
-      </form>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>
-            <strong>{item}</strong> - Priority: <em>{item.priority}</em>{item.url && (
-              <>{' '} - <a href {item.url} target='_blank'>View</a></>
-            )}
-          </li>
-        ))}
-      </ul>
+          <button type="submit" className="add-button">blow a wish</button>
+        </form>
+      </div>
+      {items.length === 0 ? (
+        <div className="empty-message">Your wishlist is empty. Add some wishes above!</div>
+      ) : (
+        <ul className="wishlist-items">
+          {items.map((item) => (
+            <li key={item.id} className={`priority-${item.priority}`}>
+              <div>
+                <strong>{item.name}</strong> - Priority: <em>{item.priority}</em>
+                {item.url && (
+                  <span className="item-url"> - <a href={item.url} target="_blank" rel="noopener noreferrer">View</a></span>
+                )}
+              </div>
+              <button 
+                onClick={() => handleRemove(item.id)} 
+                className="remove-button"
+                aria-label="Remove item"
+              >
+                ✕
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
