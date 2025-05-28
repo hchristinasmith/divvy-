@@ -9,6 +9,7 @@ function Dashboard() {
   const [selectedAccountId, setSelectedAccountId] = useState<string | null>(
     null,
   )
+  const [viewAll, setViewAll] = useState<boolean>(false)
 
   const {
     data: accountsData,
@@ -27,37 +28,63 @@ function Dashboard() {
     error: errorTransactions,
   } = useQuery({
     queryKey: ['transactions', selectedAccountId],
-    queryFn: () => grabTransactions(selectedAccountId!),
-    enabled: !!selectedAccountId,
+    queryFn: () => grabTransactions(viewAll ? null : selectedAccountId!),
+    enabled: viewAll || !!selectedAccountId,
   })
 
   if (isLoadingAccounts) return <p>Loading accounts...</p>
   if (isErrorAccounts) return <p>Error: {(errorAccounts as Error).message}</p>
   if (!accountsData?.items?.length) return <h1>No accounts found</h1>
 
+  const handleViewAllClick = () => {
+    setViewAll(true)
+    setSelectedAccountId(null)
+  } 
   return (
-    <div>
-      <h2>Select Account:</h2>
-      <ul>
-        {accountsData.items.map((account) => (
-          <li key={account._id}>
-            <button onClick={() => setSelectedAccountId(account._id)}>
-              {account.name} - {account.connection.name}
+    
+    <div className="dashboard-container">
+      <h2>Financial Dashboard</h2>
+      
+      <div className="account-selector">
+        <h3>Select Account:</h3>
+        
+        <div className="account-buttons">
+          {accountsData.items.map((account) => (
+            <button 
+              key={account._id}
+              onClick={() => {
+                setSelectedAccountId(account._id)
+                setViewAll(false)}}
+              className={`account-button ${selectedAccountId === account._id ? 'active' : ''}`}
+            >
+              {account.name}
             </button>
-          </li>
-        ))}
-      </ul>
+          ))}
+          <div >
+            <button className='account-button' onClick={handleViewAllClick}>View All Transactions</button>
+          </div>
+        </div>
+      </div>
 
-      {isLoadingTransactions && <p>Loading Transactions...</p>}
+      {isLoadingTransactions && <div className="loading-indicator">Loading Transactions...</div>}
       {isErrorTransactions && (
-        <p>Error: {(errorTransactions as Error).message}</p>
+        <div className="error-message">Error: {(errorTransactions as Error).message}</div>
       )}
 
       {transactionsData && (
-        <div>
-          <TransactionSummary transactions={transactionsData.items} />
-          <TransactionsByCategory transactions={transactionsData.items} />
-          <Transactions transactions={transactionsData.items} />
+        <div className="dashboard-content">
+          <div className="dashboard-summary">
+            <TransactionSummary transactions={transactionsData.items} />
+          </div>
+          
+          <div className="dashboard-transactions">
+            <Transactions transactions={transactionsData.items} />
+          </div>
+          
+          <div className="dashboard-categories">
+            <TransactionsByCategory transactions={transactionsData.items} />
+          </div>
+        
         </div>
       )}
     </div>

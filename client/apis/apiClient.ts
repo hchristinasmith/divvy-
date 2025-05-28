@@ -8,9 +8,15 @@ export async function grabAccounts(): Promise<Accounts> {
   return response.body as Accounts
 }
 
-export async function grabTransactions(accountId: string) {
-  const response = await request.get(
-    `${rootURL}/accounts/${accountId}/transactions`,
-  )
-  return response.body
+export async function grabTransactions(accountId?: string | null) {
+  if (accountId) {
+    // For specific account transactions
+    const response = await request.get(`${rootURL}/accounts/${accountId}/transactions`)
+    return response.body
+  } else {
+    // For 'view all transactions' mode
+    // The server route is set up as /api/v1/accounts/transactions
+    const response = await request.get(`${rootURL}/accounts/transactions`)
+    return response.body
+  }
 }
