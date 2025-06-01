@@ -9,14 +9,19 @@ export async function grabAccounts(): Promise<Accounts> {
   return response.body as Accounts
 }
 
-export async function grabTransactions(accountId?: string | null) {
-  if (accountId) {
+export async function grabTransactions(
+  accountIds?: string[] | null | undefined,
+) {
+  if (accountIds && accountIds.length > 0) {
     // For specific account transactions
-    const response = await request.get(`${rootURL}/accounts/${accountId}/transactions`)
+    const queryString = accountIds.join(',')
+    const response = await request.get(
+      `${rootURL}/accounts/transactions?accountIds=${queryString}`,
+    )
+
     return response.body
   } else {
     // For 'view all transactions' mode
-    // The server route is set up as /api/v1/accounts/transactions
     const response = await request.get(`${rootURL}/accounts/transactions`)
     return response.body
   }
@@ -27,8 +32,12 @@ export async function grabCategories() {
   return response.body
 }
 
-export async function updateTransactionCategory(transactionId: string, categoryId: string) {
-  const response = await request.patch(`${rootURL}/transactions/${transactionId}`)
+export async function updateTransactionCategory(
+  transactionId: string,
+  categoryId: string,
+) {
+  const response = await request
+    .patch(`${rootURL}/transactions/${transactionId}`)
     .send({ categoryId })
   return response.body
 }

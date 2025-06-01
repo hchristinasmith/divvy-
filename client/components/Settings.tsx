@@ -1,4 +1,4 @@
-import '../styles/App.scss'
+import '../styles/App.css'
 import { useState } from 'react'
 
 export default function Settings() {
