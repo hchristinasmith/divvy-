@@ -1,15 +1,9 @@
-import {
-  grabAccounts,
-  grabTransactions,
-  grabCategories,
-  updateTransactionCategory,
-} from '../../apis/apiClient.ts'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { grabAccounts, grabTransactions } from '../../apis/apiClient.ts'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import Transactions from './Txs.tsx'
-import TransactionSummary from './TsxSummary.tsx'
-import TransactionsByCategory from './TsxsByCategory.tsx'
-import MonthlyOverview from './MonthlyOverview.tsx'
+import ActualVTarget from './ActualVTarget.tsx'
+import TimeFilter from './TimeFilter.tsx'
+import SpendingBreakdown from './SpendingBreakdown.tsx'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -17,10 +11,16 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 
 function Dashboard() {
-  const queryClient = useQueryClient()
   const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>([])
   const [viewAll, setViewAll] = useState<boolean>(false)
+  const [selectedDays, setSelectedDays] = useState(7)
 
+  const targets = {
+    Groceries: 500,
+    Entertainment: 200,
+    Utilities: 150,
+    // Add other categories and their budget targets here
+  }
   const {
     data: accountsData,
     isLoading: isLoadingAccounts,
@@ -42,29 +42,6 @@ function Dashboard() {
     enabled: viewAll || selectedAccountIds.length > 0,
   })
 
-  const {
-    data: categoriesData,
-    isLoading: isLoadingCategories,
-    isError: isErrorCategories,
-    error: errorCategories,
-  } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => grabCategories(),
-  })
-
-  const updateCategoryMutation = useMutation({
-    mutationFn: ({
-      transactionId,
-      categoryId,
-    }: {
-      transactionId: string
-      categoryId: string
-    }) => updateTransactionCategory(transactionId, categoryId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['transactions'] })
-    },
-  })
-
   if (isLoadingAccounts) return <Skeleton className="h-10 w-full rounded-xl" />
   if (isErrorAccounts)
     return (
@@ -81,27 +58,16 @@ function Dashboard() {
       </Card>
     )
 
-  if (isLoadingCategories)
-    return <Skeleton className="h-10 w-full rounded-xl" />
-  if (isErrorCategories)
-    return (
-      <Alert variant="destructive">
-        <AlertTitle>{(errorCategories as Error).message}</AlertTitle>
-      </Alert>
-    )
-
-  const handleAssignCategory = (transactionId: string, categoryId: string) => {
-    updateCategoryMutation.mutate({ transactionId, categoryId })
-  }
-
   return (
     <div className="px-4 py-8 max-w-5xl mx-auto space-y-6">
-      <Card className="shadow-md border border-muted">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold">Dashboard</CardTitle>
-        </CardHeader>
+      <div className="flex justify-center items-center">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+      </div>
+      <Card className="border-0 shadow-none bg-transparent">
         <CardContent>
-          <h3 className="text-lg font-semibold mb-3">Select Account:</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-semibold mb-3">Select Account:</h3>
+          </div>
           <div className="flex flex-wrap gap-3">
             {accountsData.items.map((account) => {
               const isSelected = selectedAccountIds.includes(account._id)
@@ -144,15 +110,13 @@ function Dashboard() {
 
       {transactionsData && (
         <div className="space-y-6">
-          <Card className="shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold">Summary</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <TransactionSummary transactions={transactionsData.items} />
-            </CardContent>
-          </Card>
-
+          <div className="flex justify-center">
+            <TimeFilter
+              selectedDays={selectedDays}
+              onSelect={setSelectedDays}
+            />
+          </div>{' '}
+          <SpendingBreakdown transactions={transactionsData.items} />
           <Card className="shadow-sm">
             <CardHeader>
               <CardTitle className="text-xl font-semibold">
@@ -160,32 +124,9 @@ function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <MonthlyOverview transactions={transactionsData.items} />
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold">
-                Transactions
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Transactions transactions={transactionsData.items} />
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold">
-                Transactions by Category
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <TransactionsByCategory
+              <ActualVTarget
                 transactions={transactionsData.items}
-                categories={categoriesData?.items || []}
-                onAssignCategory={handleAssignCategory}
+                targets={targets}
               />
             </CardContent>
           </Card>

@@ -1,18 +1,13 @@
-import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   TrendingUpIcon,
-  Heart,
   TargetIcon,
   TrophyIcon,
   SettingsIcon,
-  Icon,
-  WandSparkles,
   Wand,
+  Menu,
 } from 'lucide-react'
-import { title } from 'process'
 
-// Menu configuration
 const menuItems = [
   {
     title: 'Dashboard',
@@ -24,7 +19,7 @@ const menuItems = [
     title: 'Wishlist',
     url: '/wishlist',
     icon: Wand,
-    description: 'Know what you want, and how to get it',
+    description: 'Keep tabs on what you want next',
   },
   {
     title: 'Targets',
@@ -36,7 +31,7 @@ const menuItems = [
     title: 'Challenges',
     url: '/challenges',
     icon: TrophyIcon,
-    description: 'Personal finance challenges',
+    description: 'Make money habits stick',
   },
   {
     title: 'Settings',
@@ -46,49 +41,62 @@ const menuItems = [
   },
 ]
 
-export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true)
-
+export default function Sidebar({
+  isOpen,
+  onClose,
+  onToggle,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  onToggle: () => void
+}) {
   return (
-    <div className="relative z-50">
-      {/* Panel wrapper: slides left/right */}
+    <>
+      {/* Sidebar panel */}
       <div
         className={`
-          fixed top-0 left-0 h-full w-[240px] flex items-start
-          transform transition-transform duration-300 ease-in-out
-          ${isOpen ? 'translate-x-0' : '-translate-x-[200px]'}
+          fixed top-0 left-0 h-full w-[240px] bg-stone-50 p-6 shadow-md rounded-r-xl
+          transform transition-transform duration-300 ease-in-out flex flex-col
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
-        {/* Sidebar */}
-        <div className="w-[240px] bg-stone-50 h-full p-6 shadow-md rounded-r-xl">
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-stone-800">Divvy</h2>
+          <p className="text-sm text-stone-500">Hold The Reins</p>
+        </div>
+
+        <nav className="space-y-4">
           {menuItems.map(({ title, url, icon: Icon, description }) => (
             <NavLink
               key={title}
               to={url}
               title={description}
-              className="flex items-center space-x-3 mb-4 text-stone-800 font-medium hover:text-stone-600 transition-colors"
+              onClick={onClose}
+              className="flex items-start space-x-3 text-stone-800 font-medium hover:text-stone-600"
             >
               <Icon className="w-5 h-5" />
-              <span>{title}</span>
+              <div className="flex flex-col">
+                <span className="font-medium">{title}</span>
+                <span className="text-xs text-stone-500">{description}</span>
+              </div>
             </NavLink>
           ))}
-        </div>
-
-        {/* Hamburger (always visible, slides with panel) */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`
-            absolute top-4 -right-10 w-8 h-8 flex flex-col justify-center items-center space-y-1
-            bg-stone-100 rounded-md shadow
-            transition-transform duration-300 ease-in-out
-          `}
-          aria-label="Toggle sidebar"
-        >
-          <span className="block w-6 h-0.5 bg-stone-700 rounded" />
-          <span className="block w-6 h-0.5 bg-stone-700 rounded" />
-          <span className="block w-6 h-0.5 bg-stone-700 rounded" />
-        </button>
+        </nav>
       </div>
-    </div>
+
+      {/* Toggle button always visible on the left */}
+      <button
+        onClick={onToggle}
+        className={`
+  fixed top-4 left-0 h-full w-[70px] bg-stone-50 rounded-r-md
+  flex items-start justify-center pt-2
+  transition-all duration-300
+  ${isOpen ? 'ml-[240px]' : 'ml-0'}
+`}
+        aria-label="Toggle sidebar"
+      >
+        <Menu size={24} />
+      </button>
+    </>
   )
 }

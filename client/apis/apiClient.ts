@@ -1,6 +1,5 @@
 import request from 'superagent'
 import { Accounts } from '../../models/akahu'
-import type { Category } from '../../models/transactions'
 
 const rootURL = new URL(`/api/v1`, document.baseURI)
 
