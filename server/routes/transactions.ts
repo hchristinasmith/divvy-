@@ -16,4 +16,21 @@ router.get('/', async (req, res) => {
   }
 })
 
+// update transaction with .patch
+
+router.patch('/:id', async (req, res) => {
+  const id = req.params.id
+  const updates = req.body
+  try {
+    const updated = await db('transactions')
+      .where({ id })
+      .update(updates)
+      .returning('*')
+    if (updated.length === 0) {
+      return res.status(404).send('Transaction not found')
+    }
+    res.json({ txn: updated[0] })
+  } catch (error) {}
+})
+
 export default router
