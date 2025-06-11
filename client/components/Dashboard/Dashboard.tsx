@@ -4,6 +4,7 @@ import { useState } from 'react'
 import ActualVTarget from './ActualVTarget.tsx'
 import TimeFilter from './TimeFilter.tsx'
 import SpendingBreakdown from './SpendingBreakdown.tsx'
+import LayoutWrapper from '../LayoutWrapper.tsx'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -59,7 +60,7 @@ function Dashboard() {
     )
 
   return (
-    <div className="px-4 py-8 max-w-5xl mx-auto space-y-6">
+    <LayoutWrapper>
       <div className="flex justify-center items-center">
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
@@ -132,7 +133,7 @@ function Dashboard() {
           </Card>
         </div>
       )}
-    </div>
+    </LayoutWrapper>
   )
 }
 

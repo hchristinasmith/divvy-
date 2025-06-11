@@ -1,5 +1,8 @@
-
-
+import LayoutWrapper from '../LayoutWrapper'
 export default function Challenges() {
-  return <div>{/* Add your budgets UI here */}</div>
+  return (
+    <LayoutWrapper>
+      <div>Challenges</div>
+    </LayoutWrapper>
+  )
 }

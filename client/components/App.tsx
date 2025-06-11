@@ -6,12 +6,14 @@ import Wishlist from './Wishlist/WishlistDashboard.tsx'
 import Challenges from './Challenges/ChallengesDashboard.tsx'
 import '../styles/App.css'
 import { useState } from 'react'
+import { Target } from 'lucide-react'
+import Subscriptions from './ManageSubscriptions/Subscriptions.tsx'
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen bg-gray-50 flex-col">
+    <div className="flex min-h-screen bg-gray-50 flex-col font-sans">
       <div className="flex flex-1">
         <Sidebar
           isOpen={sidebarOpen}
@@ -26,9 +28,11 @@ export default function App() {
         >
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/target" element={<Target />} />
+            <Route path="/manage-subscriptions" element={<Subscriptions />} />
             <Route path="/challenges" element={<Challenges />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/wishlist" element={<Wishlist />} />
           </Routes>
         </main>
       </div>

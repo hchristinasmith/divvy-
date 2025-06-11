@@ -28,6 +28,12 @@ const menuItems = [
     description: 'Set and track your goals',
   },
   {
+    title: 'Manage Subscripitons',
+    url: '/manage-subscriptions',
+    icon: TrophyIcon,
+    description: 'Manage your subscriptions',
+  },
+  {
     title: 'Challenges',
     url: '/challenges',
     icon: TrophyIcon,
@@ -55,7 +61,7 @@ export default function Sidebar({
       {/* Sidebar panel */}
       <div
         className={`
-          fixed top-0 left-0 h-full w-[240px] bg-stone-50 p-6 shadow-md rounded-r-xl
+          fixed top-0 left-0 h-full w-[260px] bg-stone-50 p-6 shadow-md rounded-r-xl
           transform transition-transform duration-300 ease-in-out flex flex-col
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
@@ -85,18 +91,20 @@ export default function Sidebar({
       </div>
 
       {/* Toggle button always visible on the left */}
-      <button
-        onClick={onToggle}
-        className={`
-  fixed top-4 left-0 h-full w-[70px] bg-stone-50 rounded-r-md
+      <div>
+        <button
+          onClick={onToggle}
+          className={`
+  fixed top-4 left-0 h-full w-[70px] bg-stone-50
   flex items-start justify-center pt-2
-  transition-all duration-300
+  transition-all duration-300 border-r
   ${isOpen ? 'ml-[240px]' : 'ml-0'}
 `}
-        aria-label="Toggle sidebar"
-      >
-        <Menu size={24} />
-      </button>
+          aria-label="Toggle sidebar"
+        >
+          <Menu size={24} />
+        </button>
+      </div>
     </>
   )
 }
