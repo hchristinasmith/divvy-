@@ -2,14 +2,14 @@ import { spending } from '../../../spending.js'
 
 const transactionsSeeds = spending.items.map((txn) => {
   return {
-    akahu_id: txn._id,
+    id: txn._id,
     account_id: txn._account,
     user_id: txn._user,
     connection_id: txn._connection,
     created_at: txn.created_at,
     updated_at: txn.updated_at,
     date: txn.date,
-    desciption: txn.description,
+    description: txn.description,
     amount: txn.amount,
     balance: txn.balance,
     type: txn.type,

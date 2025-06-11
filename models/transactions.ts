@@ -1,45 +1,38 @@
 export interface Transaction {
-  _id: string
-  _account: string
-  _user: string
-  _connection: string
-  created_at: Date
-  updated_at: Date
-  date: Date
+  id: string
+  account_id: string
+  user_id: string
+  connection_id: string
+  created_at: string // or Date
+  updated_at: string
+  date: string
+
   description: string
   amount: number
   balance: number
   type: string
   hash: string
-  meta: Meta
-  merchant: Merchant
-  category: Category
-}
 
-export interface Category {
-  _id: string
-  name: string
-  groups: Groups
-}
+  // Embedded category
+  category_id: string
+  category_name: string
+  category_group_id: string
+  category_group_name: string
 
-export interface Groups {
-  personal_finance: PersonalFinance
-}
-
-export interface PersonalFinance {
-  _id: string
-  name: string
-}
-
-export interface Merchant {
-  _id: string
-  name: string
-  website: string
-}
-
-export interface Meta {
+  // Embedded meta
   particulars: string
   code: string
   reference: string
+  other_account: string
   logo: string
+  conversion_amount: number
+  conversion_currency: number
+  conversion_rate: number
+  card_suffix: string
+
+  // Embedded merchant
+  merchant_id: string
+  merchant_name: string
+  merchant_website: string
+  merchant_logo: string
 }
