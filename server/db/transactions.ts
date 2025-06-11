@@ -17,3 +17,19 @@ export async function searchTxns(
 
   return query.select()
 }
+
+export async function updateTxnCat(
+  txnId: string,
+  category_group_name: string,
+  db = connection,
+): Promise<number> {
+  try {
+    const updatedRows = await db('transactions').where({ id: txnId }).update({
+      category_group_name,
+    })
+    return updatedRows
+  } catch (error) {
+    console.error('Failed to update transaction category group name', error)
+    throw error
+  }
+}

@@ -6,6 +6,7 @@ import {
   SettingsIcon,
   Wand,
   Menu,
+  ArrowRightLeft,
 } from 'lucide-react'
 
 const menuItems = [
@@ -14,6 +15,12 @@ const menuItems = [
     url: '/',
     icon: TrendingUpIcon,
     description: 'See how your money flows',
+  },
+  {
+    title: 'Transactions',
+    url: '/transactions',
+    icon: ArrowRightLeft,
+    description: 'View & Manage Transactions',
   },
   {
     title: 'Wishlist',

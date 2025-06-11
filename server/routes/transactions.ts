@@ -20,17 +20,22 @@ router.get('/', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const id = req.params.id
-  const updates = req.body
+  const { category_group_name } = req.body
+  if (!category_group_name) {
+    return res.status(400).json({ error: 'category_group_name is required' })
+  }
   try {
-    const updated = await db('transactions')
-      .where({ id })
-      .update(updates)
-      .returning('*')
-    if (updated.length === 0) {
-      return res.status(404).send('Transaction not found')
+    const updatedCount = await db.updateTxnCat(id, category_group_name)
+
+    if (updatedCount === 0) {
+      return res.status(404).json({ error: 'Transaction not found' })
     }
-    res.json({ txn: updated[0] })
-  } catch (error) {}
+
+    res.json({ message: 'Transaction updated', updatedCount })
+  } catch (error) {
+    console.error('Error updating transaction category group name:', error)
+    return res.status(500).json({ error: 'Internal server error' })
+  }
 })
 
 export default router

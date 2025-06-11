@@ -8,6 +8,7 @@ import '../styles/App.css'
 import { useState } from 'react'
 import { Target } from 'lucide-react'
 import Subscriptions from './ManageSubscriptions/Subscriptions.tsx'
+import Transactions from './Transactions.tsx'
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/manage-subscriptions" element={<Subscriptions />} />
             <Route path="/challenges" element={<Challenges />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/transactions" element={<Transactions />} />
           </Routes>
         </main>
       </div>

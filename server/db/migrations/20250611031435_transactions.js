@@ -4,7 +4,8 @@
  */
 export function up(knex) {
   return knex.schema.createTable('transactions', (table) => {
-    table.string('id').primary()
+    table.increments('id').primary()
+    table.string('akahu_id').unique()
     table.string('account_id')
     table.string('user_id')
     table.string('connection_id')

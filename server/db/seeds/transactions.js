@@ -2,7 +2,7 @@ import { spending } from '../../../spending.js'
 
 const transactionsSeeds = spending.items.map((txn) => {
   return {
-    id: txn._id,
+    akahu_id: txn._id,
     account_id: txn._account,
     user_id: txn._user,
     connection_id: txn._connection,
