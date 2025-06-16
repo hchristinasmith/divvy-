@@ -16,9 +16,10 @@ router.get('/', async (req, res) => {
   }
 })
 
-// update transaction with .patch
+// update category, description transaction with .put
+//needs editing
 
-router.patch('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   const id = req.params.id
   const { category_group_name } = req.body
   if (!category_group_name) {

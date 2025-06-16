@@ -19,12 +19,12 @@ export async function searchTxns(
 }
 
 export async function updateTxnCat(
-  txnId: string,
+  txn_id: string,
   category_group_name: string,
   db = connection,
 ): Promise<number> {
   try {
-    const updatedRows = await db('transactions').where({ id: txnId }).update({
+    const updatedRows = await db('transactions').where({ id: txn_id }).update({
       category_group_name,
     })
     return updatedRows

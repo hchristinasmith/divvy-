@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@radix-ui/react-select'
-import { categories } from '../../data/Cats'
+import { categories } from '../../../data/cats.js'
 
 export default function CategoryDropdown() {
   const [selected, setSelected] = useState('')

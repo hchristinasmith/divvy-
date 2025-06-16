@@ -60,7 +60,7 @@ export default function Wishlist() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="What do you wish for? <3"
+                placeholder="Add to wishlsit"
                 required
               />
             </div>
@@ -88,7 +88,7 @@ export default function Wishlist() {
             </div>
 
             <button type="submit" className="add-button">
-              blow a wish
+              Add to Wishlist
             </button>
           </form>
         </div>

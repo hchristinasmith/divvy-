@@ -8,7 +8,7 @@ import '../styles/App.css'
 import { useState } from 'react'
 import { Target } from 'lucide-react'
 import Subscriptions from './ManageSubscriptions/Subscriptions.tsx'
-import Transactions from './Transactions.tsx'
+import Transactions from './Transactions/TransactionsPage.tsx'
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)

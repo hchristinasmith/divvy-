@@ -7,6 +7,7 @@ import {
   Wand,
   Menu,
   ArrowRightLeft,
+  CalendarSearch,
 } from 'lucide-react'
 
 const menuItems = [
@@ -37,7 +38,7 @@ const menuItems = [
   {
     title: 'Manage Subscripitons',
     url: '/manage-subscriptions',
-    icon: TrophyIcon,
+    icon: CalendarSearch,
     description: 'Manage your subscriptions',
   },
   {
@@ -75,7 +76,7 @@ export default function Sidebar({
       >
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-stone-800">Divvy</h2>
-          <p className="text-sm text-stone-500">Hold The Reins</p>
+          <p className="text-sm text-stone-500">Manage yah moneys</p>
         </div>
 
         <nav className="space-y-4">
