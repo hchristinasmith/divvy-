@@ -5,10 +5,11 @@ import {
   TrophyIcon,
   SettingsIcon,
   Wand,
-  Menu,
   ArrowRightLeft,
   CalendarSearch,
+  Menu,
 } from 'lucide-react'
+import clsx from 'clsx'
 
 const menuItems = [
   {
@@ -67,50 +68,58 @@ export default function Sidebar({
   return (
     <>
       {/* Sidebar panel */}
-      <div
-        className={`
-          fixed top-0 left-0 h-full w-[260px] bg-stone-50 p-6 shadow-md rounded-r-xl
-          transform transition-transform duration-300 ease-in-out flex flex-col
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        `}
-      >
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-stone-800">Divvy</h2>
-          <p className="text-sm text-stone-500">Manage yah moneys</p>
+      <div className="shadow-md">
+        <div
+          className={clsx(
+            'fixed top-0 left-0 h-full w-[260px] p-6 bg-sidebar text-sidebar-foreground z-40',
+            'transition-transform duration-300 ease-in-out transform rounded-r-2xl flex flex-col',
+            isOpen ? 'translate-x-0' : '-translate-x-full',
+          )}
+        >
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold text-sidebar-primary">Divvy</h2>
+            <p className="text-sm text-muted-foreground">Manage yah moneys</p>
+          </div>
+
+          <nav className="space-y-5">
+            {menuItems.map(({ title, url, icon: Icon, description }) => (
+              <NavLink
+                key={title}
+                to={url}
+                title={description}
+                onClick={onClose}
+                className={({ isActive }) =>
+                  clsx(
+                    'flex items-start gap-3 rounded-lg px-3 py-2 transition-colors group',
+                    isActive
+                      ? 'bg-accent text-accent-foreground shadow-sm'
+                      : 'hover:bg-muted hover:text-foreground text-foreground',
+                  )
+                }
+              >
+                <Icon className="w-5 h-5 mt-1 opacity-80 group-hover:opacity-100" />
+                <div className="flex flex-col">
+                  <span className="font-medium text-sm">{title}</span>
+                  <span className="text-xs text-muted-foreground leading-tight">
+                    {description}
+                  </span>
+                </div>
+              </NavLink>
+            ))}
+          </nav>
         </div>
 
-        <nav className="space-y-4">
-          {menuItems.map(({ title, url, icon: Icon, description }) => (
-            <NavLink
-              key={title}
-              to={url}
-              title={description}
-              onClick={onClose}
-              className="flex items-start space-x-3 text-stone-800 font-medium hover:text-stone-600"
-            >
-              <Icon className="w-5 h-5" />
-              <div className="flex flex-col">
-                <span className="font-medium">{title}</span>
-                <span className="text-xs text-stone-500">{description}</span>
-              </div>
-            </NavLink>
-          ))}
-        </nav>
-      </div>
-
-      {/* Toggle button always visible on the left */}
-      <div>
+        {/* Toggle Button */}
         <button
           onClick={onToggle}
-          className={`
-  fixed top-4 left-0 h-full w-[70px] bg-stone-50
-  flex items-start justify-center pt-2
-  transition-all duration-300 border-r
-  ${isOpen ? 'ml-[240px]' : 'ml-0'}
-`}
           aria-label="Toggle sidebar"
+          className={clsx(
+            'fixed top-4 left-0 z-50 h-10 w-10 text-primary-background',
+            'rounded-r-xl  flex items-center justify-center transition-all duration-300',
+            isOpen ? 'ml-[250px]' : 'ml-0',
+          )}
         >
-          <Menu size={24} />
+          <Menu size={20} />
         </button>
       </div>
     </>

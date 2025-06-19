@@ -9,12 +9,14 @@ import { useState } from 'react'
 import { Target } from 'lucide-react'
 import Subscriptions from './ManageSubscriptions/Subscriptions.tsx'
 import Transactions from './Transactions/TransactionsPage.tsx'
-
+import AuthButtons from './Auth/AuthButtons.tsx'
+import UserProfile from './Auth/UserProfile.tsx'
+import DarkModeToggle from './DarkMode.tsx'
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen bg-gray-50 flex-col font-sans">
+    <div className="flex min-h-screen flex-col font-sans">
       <div className="flex flex-1">
         <Sidebar
           isOpen={sidebarOpen}
@@ -27,6 +29,12 @@ export default function App() {
             sidebarOpen ? 'ml-[240px]' : 'ml-0'
           }`}
         >
+          <div className="mb-4 flex justify-end items-center space-x-4">
+            <UserProfile />
+            <AuthButtons />
+            <DarkModeToggle />
+          </div>
+
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/wishlist" element={<Wishlist />} />
