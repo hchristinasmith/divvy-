@@ -12,6 +12,7 @@ import Transactions from './Transactions/TransactionsPage.tsx'
 import AuthButtons from './Auth/AuthButtons.tsx'
 import UserProfile from './Auth/UserProfile.tsx'
 import DarkModeToggle from './DarkMode.tsx'
+import Targets from './Targets/targets.tsx'
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -38,7 +39,17 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/target" element={<Target />} />
+            <Route
+              path="/targets"
+              element={
+                <Targets
+                  targets={[]}
+                  onAddNewTarget={function (): void {
+                    throw new Error('Function not implemented.')
+                  }}
+                />
+              }
+            />
             <Route path="/manage-subscriptions" element={<Subscriptions />} />
             <Route path="/challenges" element={<Challenges />} />
             <Route path="/settings" element={<Settings />} />
