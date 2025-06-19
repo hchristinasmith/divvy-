@@ -2,35 +2,25 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export async function seed(knex) {
-  // Deletes ALL existing entries
-  await knex('targets').del()
+export async function up(knex) {
+  return knex.schema.createTable('targets', (table) => {
+    table.increments('id').primary()
+    table
+      .integer('user_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE')
+    table.string('category', 255).notNullable() // e.g., 'Housing', 'Food', etc.
+    table.decimal('target_amount', 14, 2).notNullable() // target amount for the category
+    table.string('period', 50).notNullable() // e.g., 'monthly', 'yearly', or custom period
+    table.timestamp('created_at').defaultTo(knex.fn.now())
+    table.timestamp('updated_at').defaultTo(knex.fn.now())
+    table.unique(['user_id', 'category', 'period']) // avoid duplicate targets for same category/period per user
+  })
+}
 
-  // Inserts seed entries
-  await knex('targets').insert([
-    {
-      user_id: 1,
-      category: 'Housing',
-      target_amount: 1200.0,
-      period: 'monthly',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-    {
-      user_id: 1,
-      category: 'Food',
-      target_amount: 500.0,
-      period: 'monthly',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-    {
-      user_id: 2,
-      category: 'Entertainment',
-      target_amount: 150.0,
-      period: 'monthly',
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-  ])
+export async function down(knex) {
+  return knex.schema.dropTableIfExists('targets')
 }
