@@ -2,11 +2,8 @@ import { Routes, Route } from 'react-router-dom'
 import Sidebar from './Sidebar.tsx'
 import Dashboard from './Dashboard/Dashboard.tsx'
 import Settings from './Settings.tsx'
-import Wishlist from './Wishlist/WishlistDashboard.tsx'
-import Challenges from './Challenges/ChallengesDashboard.tsx'
 import '../styles/App.css'
 import { useState } from 'react'
-import { Target } from 'lucide-react'
 import Subscriptions from './ManageSubscriptions/Subscriptions.tsx'
 import Transactions from './Transactions/TransactionsPage.tsx'
 import AuthButtons from './Auth/AuthButtons.tsx'
@@ -38,7 +35,6 @@ export default function App() {
 
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/wishlist" element={<Wishlist />} />
             <Route
               path="/targets"
               element={
@@ -51,7 +47,6 @@ export default function App() {
               }
             />
             <Route path="/manage-subscriptions" element={<Subscriptions />} />
-            <Route path="/challenges" element={<Challenges />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/transactions" element={<Transactions />} />
           </Routes>

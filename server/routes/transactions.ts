@@ -1,41 +1,38 @@
 import express from 'express'
+import { Transaction } from 'models/transactions'
+import request from 'superagent'
 const router = express.Router()
-import * as db from '../db/transactions.ts'
+// import * as db from '../db/transactions.ts'
 //connect this to database
-//get, delete etc
-// get and search for transactions
 
+// GET /api/v1/transactions
 router.get('/', async (req, res) => {
-  const { description } = req.query
   try {
-    const txns = await db.searchTxns(description as string)
-    res.json({ txns })
-  } catch (error) {
-    console.error(error)
-    res.status(500).send("Couldn't search products")
-  }
-})
+    const token = process.env.AKAHU_USER_TOKEN
+    const appId = process.env.AKAHU_APP_ID
 
-// update category, description transaction with .put
-//needs editing
+    if (!token || !appId) throw new Error('Missing Akahu credentials')
 
-router.put('/:id', async (req, res) => {
-  const id = req.params.id
-  const { category_group_name } = req.body
-  if (!category_group_name) {
-    return res.status(400).json({ error: 'category_group_name is required' })
-  }
-  try {
-    const updatedCount = await db.updateTxnCat(id, category_group_name)
+    const response = await request
+      .get('https://api.akahu.io/v1/transactions')
+      .set('Authorization', `Bearer ${token}`)
+      .set('X-Akahu-Id', appId)
 
-    if (updatedCount === 0) {
-      return res.status(404).json({ error: 'Transaction not found' })
-    }
+    const transactions = (response.body.items as Transaction[]).map((tx) => ({
+      id: tx.id,
+      date: tx.date,
+      amount: tx.amount,
+      description: tx.description,
+      type: tx.type,
+      account_id: tx.account_id,
+      category_name: tx.category_name,
+      merchant_name: tx.merchant_name,
+    }))
 
-    res.json({ message: 'Transaction updated', updatedCount })
-  } catch (error) {
-    console.error('Error updating transaction category group name:', error)
-    return res.status(500).json({ error: 'Internal server error' })
+    res.json(transactions)
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Something went wrong'
+    res.status(500).send({ error: message })
   }
 })
 

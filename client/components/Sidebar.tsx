@@ -24,12 +24,7 @@ const menuItems = [
     icon: ArrowRightLeft,
     description: 'View & Manage Transactions',
   },
-  {
-    title: 'Wishlist',
-    url: '/wishlist',
-    icon: Wand,
-    description: 'Keep tabs on what you want next',
-  },
+
   {
     title: 'Targets',
     url: '/targets',
@@ -41,12 +36,6 @@ const menuItems = [
     url: '/manage-subscriptions',
     icon: CalendarSearch,
     description: 'Manage your subscriptions',
-  },
-  {
-    title: 'Challenges',
-    url: '/challenges',
-    icon: TrophyIcon,
-    description: 'Make money habits stick',
   },
   {
     title: 'Settings',
