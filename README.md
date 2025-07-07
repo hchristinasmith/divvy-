@@ -94,8 +94,8 @@ The application follows a modern full-stack architecture:
 ### Installation
 
 ```
-git clone [your-repository-url]
-cd [your-project-name]
+git clone https://github.com/hchristinasmith/divvy-.git
+cd divvy-
 npm install
 npm run dev
 ```
@@ -106,5 +106,5 @@ You can find the server running on [http://localhost:3000](http://localhost:3000
 - **Frontend**: React, TypeScript, Vite, Tailwind CSS, Shadcn UI
 - **Backend**: Express, Node.js
 - **Database**: PostgreSQL with Knex.js
-- **Authentication**: Auth0 (or your authentication provider)
+- **Authentication**: Auth0 
 - **Third-party APIs**: Akahu API for financial data
