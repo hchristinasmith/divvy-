@@ -33,3 +33,59 @@ You can find the server running on [http://localhost:3000](http://localhost:3000
 
 ---
 [Provide feedback on this repo](https://docs.google.com/forms/d/e/1FAIpQLSfw4FGdWkLwMLlUaNQ8FtP2CTJdGDUv6Xoxrh19zIrJSkvT4Q/viewform?usp=pp_url&entry.1958421517=boilerplate-fullstack)
+
+┌────────────────────────────┐
+│         Frontend           │
+│      (React / Vite)        │
+│                            │
+│  - View accounts           │
+│  - View transactions       │
+│  - Categorize transactions │
+│  - Refresh button          │
+└────────────┬───────────────┘
+             │
+             ▼
+ ┌──────────────────────────┐
+ │        Express API       │
+ │  /api/accounts/sync      │◄── Refresh button
+ │  /api/transactions/sync  │◄── Refresh button
+ │  /api/transactions        │──► Fetch transactions
+ │  /api/accounts            │──► Fetch accounts
+ └───────┬───────────┬──────┘
+         │           │
+         ▼           ▼
+ ┌──────────────────────────┐
+ │   Akahu API (3rd party)  │
+ │  GET /accounts           │
+ │  GET /transactions       │
+ └──────────────────────────┘
+         ▲
+         │
+         ▼
+ ┌──────────────────────────┐
+ │        Knex.js           │
+ │     (DB query builder)   │
+ └───────┬───────────┬──────┘
+         │           │
+         ▼           ▼
+ ┌──────────────────────────┐
+ │       PostgreSQL DB      │
+ │   ┌────────────────────┐ │
+ │   │    transactions    │ │
+ │   │  - akahu_id (unique)││
+ │   │  - category (editable) │
+ │   └────────────────────┘ │
+ │   ┌────────────────────┐ │
+ │   │     accounts       │ │
+ │   │  - akahu_id (unique)││
+ │   └────────────────────┘ │
+ └──────────────────────────┘
+
+
+Build a GET route that joins transactions with accounts
+
+ Add category editing support via a PATCH route
+
+ Add filtering (e.g. by account, date, category) on the frontend
+
+ Trigger sync from the frontend with a button

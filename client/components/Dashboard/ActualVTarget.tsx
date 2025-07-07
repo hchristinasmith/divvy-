@@ -10,7 +10,7 @@ interface ActualVTargetProps {
   targets: Record<string, number>
 }
 
-function ActualVTarget({ transactions, targets }: ActualVTargetProps) {
+function ActualVTarget({ transactions = [], targets }: ActualVTargetProps) {
   // Calculate actual spending per category
   const actuals = transactions.reduce<Record<string, number>>((acc, t) => {
     acc[t.category] = (acc[t.category] || 0) + t.amount

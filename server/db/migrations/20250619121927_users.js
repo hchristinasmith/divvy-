@@ -14,5 +14,5 @@ export async function up(knex) {
 }
 
 export async function down(knex) {
-  return knex.schema.dropTableIfExists('users')
+  return knex.schema.dropTable('users')
 }

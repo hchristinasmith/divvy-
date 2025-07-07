@@ -28,14 +28,16 @@ function generateColor(index: number) {
   return colors[index % colors.length]
 }
 
-function SpendingBreakdown({ transactions }: SpendingBreakdownProps) {
+function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
   const expenseTransactions = transactions.filter((tx) => tx.amount < 0)
 
   const categoryTotalsMap: Record<string, number> = {}
   expenseTransactions.forEach((tx) => {
     const name =
-      tx.category?.groups?.personal_finance?.name ||
-      tx.category?.name ||
+      tx.category_name ||
+      tx.category_group_name ||
+      tx.category_group_id ||
+      tx.category_id ||
       'Uncategorized'
 
     categoryTotalsMap[name] =

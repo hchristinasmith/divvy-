@@ -1,42 +1,42 @@
 import request from 'superagent'
-import { Accounts } from '../../models/akahu'
+import { Item } from '../../models/akahu'
 
 const rootURL = new URL(`/api/v1`, document.baseURI)
 
-export async function grabAccounts(): Promise<Accounts> {
+export async function getAllAccounts(): Promise<Item[]> {
   const response = await request.get(`${rootURL}/accounts`)
-  return response.body as Accounts
+  return response.body
 }
 
-export async function grabTransactions(
-  accountIds?: string[] | null | undefined,
-) {
-  if (accountIds && accountIds.length > 0) {
-    // For specific account transactions
-    const queryString = accountIds.join(',')
-    const response = await request.get(
-      `${rootURL}/accounts/transactions?accountIds=${queryString}`,
-    )
-
-    return response.body
-  } else {
-    // For 'view all transactions' mode
-    const response = await request.get(`${rootURL}/accounts/transactions`)
-    return response.body
-  }
-}
-
-export async function grabCategories() {
-  const response = await request.get(`${rootURL}/categories`)
+// Get all transactions
+export async function getAllTransactions() {
+  const response = await request.get(`${rootURL}/transactions`)
+  console.log('API response (transactions):', response.body)
   return response.body
 }
 
 export async function updateTransactionCategory(
-  transactionId: string,
-  categoryId: string,
+  transactionId: number,
+  {
+    category_name,
+    category_id,
+    category_group_id,
+    category_group_name,
+  }: {
+    category_name: string
+    category_id?: string
+    category_group_id?: string
+    category_group_name?: string
+  },
 ) {
   const response = await request
     .patch(`${rootURL}/transactions/${transactionId}`)
-    .send({ categoryId })
+    .send({
+      category_name,
+      category_id,
+      category_group_id,
+      category_group_name,
+    })
+
   return response.body
 }

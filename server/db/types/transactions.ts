@@ -36,3 +36,45 @@ export interface Transaction {
   merchant_website: string
   merchant_logo: string
 }
+
+export default interface AkahuTransaction {
+  _id: string
+  _account: string
+  _user: string
+  _connection: string
+  created_at: string
+  updated_at: string
+  date: string
+  description: string
+  amount: number
+  balance: number
+  type: string
+  hash: string
+  category?: {
+    _id: string
+    name: string
+    groups?: {
+      personal_finance?: {
+        _id: string
+        name: string
+      }
+    }
+  }
+  meta?: {
+    particulars?: string
+    code?: string
+    reference?: string
+    other_account?: string
+    logo?: string
+    conversion_amount?: number
+    conversion_currency?: string
+    conversion_rate?: number
+    card_suffix?: string
+  }
+  merchant?: {
+    _id: string
+    name: string
+    website?: string
+    logo?: string
+  }
+}

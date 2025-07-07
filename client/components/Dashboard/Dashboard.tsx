@@ -1,5 +1,5 @@
-import { grabAccounts, grabTransactions } from '../../apis/apiClient.ts'
-import { useQuery } from '@tanstack/react-query'
+import { useAllTransactions } from '../../hooks/useTransactions.tsx'
+import { useAllAccounts } from '../../hooks/useAccount.tsx'
 import { useState } from 'react'
 import ActualVTarget from './ActualVTarget.tsx'
 import TimeFilter from './TimeFilter.tsx'
@@ -13,7 +13,6 @@ import { Alert, AlertTitle } from '@/components/ui/alert'
 
 function Dashboard() {
   const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>([])
-  const [viewAll, setViewAll] = useState<boolean>(false)
   const [selectedDays, setSelectedDays] = useState(7)
 
   const targets = {
@@ -22,26 +21,22 @@ function Dashboard() {
     Utilities: 150,
     // Add other categories and their budget targets here
   }
+
   const {
     data: accountsData,
     isLoading: isLoadingAccounts,
     isError: isErrorAccounts,
     error: errorAccounts,
-  } = useQuery({
-    queryKey: ['accounts'],
-    queryFn: () => grabAccounts(),
-  })
+  } = useAllAccounts()
+  console.log('accountsData:', accountsData)
 
   const {
     data: transactionsData,
     isLoading: isLoadingTransactions,
     isError: isErrorTransactions,
     error: errorTransactions,
-  } = useQuery({
-    queryKey: ['transactions', viewAll ? 'all' : selectedAccountIds],
-    queryFn: () => grabTransactions(viewAll ? null : selectedAccountIds),
-    enabled: viewAll || selectedAccountIds.length > 0,
-  })
+  } = useAllTransactions()
+  console.log('transactionsData:', transactionsData)
 
   if (isLoadingAccounts) return <Skeleton className="h-10 w-full rounded-xl" />
   if (isErrorAccounts)
@@ -50,7 +45,8 @@ function Dashboard() {
         <AlertTitle>{(errorAccounts as Error).message}</AlertTitle>
       </Alert>
     )
-  if (!accountsData?.items?.length)
+
+  if (!accountsData?.length)
     return (
       <Card>
         <CardHeader>
@@ -70,14 +66,13 @@ function Dashboard() {
             <h3 className="text-lg font-semibold mb-3">Select Account:</h3>
           </div>
           <div className="flex flex-wrap gap-3">
-            {accountsData.items.map((account) => {
+            {accountsData.map((account) => {
               const isSelected = selectedAccountIds.includes(account._id)
               return (
                 <Button
                   key={account._id}
                   variant={isSelected ? 'default' : 'outline'}
                   onClick={() => {
-                    setViewAll(false)
                     setSelectedAccountIds((prev) =>
                       isSelected
                         ? prev.filter((id) => id !== account._id)
@@ -89,15 +84,6 @@ function Dashboard() {
                 </Button>
               )
             })}
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setViewAll(true)
-                setSelectedAccountIds([])
-              }}
-            >
-              View All Transactions
-            </Button>
           </div>
         </CardContent>
       </Card>

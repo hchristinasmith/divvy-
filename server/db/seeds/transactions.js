@@ -1,7 +1,16 @@
-import { spending } from '../../../spending.js'
+import 'dotenv/config'
+import { fetchAkahuTransactions } from '../akahuService.js'
 
-const transactionsSeeds = spending.items.map((txn) => {
-  return {
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+
+export async function seed(knex) {
+  // Fetch data fresh
+  const data = await fetchAkahuTransactions()
+
+  const transactionsSeeds = data.items.map((txn) => ({
     akahu_id: txn._id,
     account_id: txn._account,
     user_id: txn._user,
@@ -16,33 +25,25 @@ const transactionsSeeds = spending.items.map((txn) => {
     hash: txn.hash,
     category_id: txn.category?._id || null,
     category_name: txn.category?.name || null,
-    category_group_id: txn.category?.groups.personal_finance._id || null,
-    category_group_name: txn.category?.groups.personal_finance.name || null,
-    particulars: txn.meta.particulars || null,
-    code: txn.meta.code || null,
-    reference: txn.meta.reference || null,
-    other_account: txn.meta.other_account || null,
-    logo: txn.meta.logo || null,
-    conversion_amount: txn.meta.conversion_amount || null,
-    conversion_currency: txn.meta.conversion_currency || null,
-    conversion_rate: txn.meta.conversion_rate || null,
-    card_suffix: txn.meta.card_suffix || null,
+    category_group_id: txn.category?.groups?.personal_finance?._id || null,
+    category_group_name: txn.category?.groups?.personal_finance?.name || null,
+    particulars: txn.meta?.particulars || null,
+    code: txn.meta?.code || null,
+    reference: txn.meta?.reference || null,
+    other_account: txn.meta?.other_account || null,
+    logo: txn.meta?.logo || null,
+    conversion_amount: txn.meta?.conversion_amount || null,
+    conversion_currency: txn.meta?.conversion_currency || null,
+    conversion_rate: txn.meta?.conversion_rate || null,
+    card_suffix: txn.meta?.card_suffix || null,
     merchant_id: txn.merchant?._id || null,
     merchant_name: txn.merchant?.name || null,
     merchant_website: txn.merchant?.website || null,
     merchant_logo: txn.merchant?.logo || null,
-  }
-})
+  }))
 
-console.log(transactionsSeeds)
-
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-
-export async function seed(knex) {
-  // Deletes ALL existing entries
+  // Delete all existing records
   await knex('transactions').del()
+  // Insert new data
   await knex('transactions').insert(transactionsSeeds)
 }
