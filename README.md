@@ -35,9 +35,8 @@
 - **Authentication**: Secure login and account management
 
 ### Additional Features
-- **Responsive Design**: Works seamlessly across desktop and mobile devices
 - **Modern UI**: Clean, intuitive interface built with Tailwind CSS
-- **Real-time Updates**: Sync with your financial data
+- **Real-time Updates**: Sync with your financial data using Akahu API
 
 ## Architecture
 The application follows a modern full-stack architecture:
