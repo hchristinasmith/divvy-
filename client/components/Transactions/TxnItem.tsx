@@ -65,8 +65,8 @@ export default function TxnItem({ transaction }: Props) {
 
   return (
     <>
-      <TableRow className="hover:bg-slate-50 border-b transition-colors">
-        <TableCell className="py-3 text-slate-600 font-medium">{formatDate(transaction.date)}</TableCell>
+      <TableRow className="hover:bg-[var(--muted)] border-b border-[var(--border)] transition-colors">
+        <TableCell className="py-3 text-[var(--foreground)] font-medium">{formatDate(transaction.date)}</TableCell>
         <TableCell className="max-w-[300px] py-3">
           {editing ? (
             <input
@@ -92,7 +92,7 @@ export default function TxnItem({ transaction }: Props) {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="h-6 px-2 text-xs text-slate-500 hover:text-blue-600"
+                  className="h-6 px-2 text-xs text-[var(--muted-foreground)] hover:text-[var(--accent-foreground)]"
                   onClick={() => setDetailsOpen(!detailsOpen)}
                 >
                   Details {detailsOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -138,16 +138,16 @@ export default function TxnItem({ transaction }: Props) {
         <TableCell className="py-3">
           {editing ? (
             <div className="flex gap-2 justify-end">
-              <Button size="icon" variant="ghost" onClick={handleSubmit} className="h-8 w-8 hover:bg-pink-100 transition-colors">
-                <Check className="h-4 w-4 text-pink-700" />
+              <Button size="icon" variant="ghost" onClick={handleSubmit} className="h-8 w-8 hover:bg-[var(--accent)] transition-colors">
+                <Check className="h-4 w-4 text-[var(--accent-foreground)]" />
               </Button>
-              <Button size="icon" variant="ghost" onClick={() => setEditing(false)} className="h-8 w-8 hover:bg-pink-100 transition-colors">
-                <X className="h-4 w-4 text-pink-500" />
+              <Button size="icon" variant="ghost" onClick={() => setEditing(false)} className="h-8 w-8 hover:bg-[var(--accent)] transition-colors">
+                <X className="h-4 w-4 text-[var(--accent-foreground)]" />
               </Button>
             </div>
           ) : (
             <div className="flex justify-end">
-              <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="h-8 w-8 hover:bg-pink-100 hover:text-pink-700 transition-colors">
+              <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="h-8 w-8 hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors">
                 <Pencil className="h-4 w-4" />
               </Button>
             </div>
@@ -157,28 +157,28 @@ export default function TxnItem({ transaction }: Props) {
       
       {/* Merchant details dropdown */}
       {!editing && hasMerchantData && detailsOpen && (
-        <TableRow className="bg-slate-50">
+        <TableRow className="bg-[var(--muted)]">
           <TableCell colSpan={5} className="py-3 px-4">
-            <div className="flex items-start gap-4 p-3 bg-white rounded-md border border-slate-200 shadow-sm">
+            <div className="flex items-start gap-4 p-3 bg-[var(--background)] rounded-md border border-[var(--border)] shadow-sm">
               {transaction.merchant_logo && (
                 <div className="flex-shrink-0">
                   <img 
                     src={transaction.merchant_logo} 
                     alt={transaction.merchant_name || 'Merchant logo'} 
-                    className="w-12 h-12 rounded-md object-contain border border-slate-200 bg-white p-1"
+                    className="w-12 h-12 rounded-md object-contain border border-[var(--border)] bg-[var(--background)] p-1"
                   />
                 </div>
               )}
               <div className="flex-grow">
                 {transaction.merchant_name && (
-                  <h4 className="font-medium text-slate-800 mb-1">{transaction.merchant_name}</h4>
+                  <h4 className="font-medium text-[var(--foreground)] mb-1">{transaction.merchant_name}</h4>
                 )}
                 {transaction.merchant_website && (
                   <a 
                     href={transaction.merchant_website} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                    className="flex items-center gap-1 text-sm text-[var(--accent-foreground)] hover:underline"
                   >
                     <Globe size={14} />
                     {transaction.merchant_website.replace(/^https?:\/\//, '')}

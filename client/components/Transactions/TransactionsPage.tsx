@@ -6,10 +6,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table.tsx'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import LayoutWrapper from '../LayoutWrapper'
 import SearchTxns from './SearchTxns.tsx'
 import TxnItem from './TxnItem.tsx'
+import CategoryDropdown from './CategoryDropDown.tsx'
 import { mockTransactions } from './mockTransactions'
+import { Filter, AlertCircle } from 'lucide-react'
 
 export default function Transactions() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -47,44 +50,44 @@ export default function Transactions() {
 
   return (
     <LayoutWrapper>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold">Transactions</h2>
-          <div className="text-sm text-muted-foreground">
-            {filteredTransactions.length} transactions found
-          </div>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Transactions</h1>
+        <div className="text-sm text-muted-foreground bg-[var(--muted)] px-3 py-1.5 rounded-full">
+          {filteredTransactions.length} transactions found
         </div>
-        
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6 bg-slate-50 p-4 rounded-lg border">
-          <div className="flex-grow">
-            <SearchTxns onSearch={handleSearch} />
-          </div>
-        </div>
-        
-        {filteredTransactions.length === 0 ? (
-          <div className="text-center py-12 px-4 border rounded-lg bg-slate-50">
-            <div className="flex flex-col items-center gap-2">
-              <div className="p-3 rounded-full bg-slate-100">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400">
-                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                  <line x1="12" y1="9" x2="12" y2="13"></line>
-                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-              </div>
-              <h3 className="text-lg font-medium text-slate-700">No transactions found</h3>
-              <p className="text-slate-500 max-w-sm">No transactions match your current search criteria. Try adjusting your filters or search term.</p>
+      </div>
+      
+      <Card className="shadow-sm mb-4">
+        <CardContent className="p-4">
+          <div className="flex flex-col gap-4 w-full">
+            <div className="w-full">
+              <SearchTxns onSearch={handleSearch} />
             </div>
+  
           </div>
+        </CardContent>
+      </Card>
+      
+      {filteredTransactions.length === 0 ? (
+          <Card className="shadow-sm">
+            <CardContent className="flex flex-col items-center justify-center py-12 px-4 text-center">
+              <div className="p-3 rounded-full bg-[var(--muted)] mb-3">
+                <AlertCircle className="h-6 w-6 text-[var(--muted-foreground)]" />
+              </div>
+              <h3 className="text-lg font-medium text-[var(--foreground)]">No transactions found</h3>
+              <p className="text-[var(--muted-foreground)] max-w-sm">No transactions match your current search criteria. Try adjusting your filters or search term.</p>
+            </CardContent>
+          </Card>
         ) : (
-          <div className="border rounded-lg overflow-hidden shadow-sm">
+          <Card className="shadow-sm overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="bg-slate-50 border-b">
-                  <TableHead className="w-[120px] font-semibold text-slate-700 py-4">Date</TableHead>
-                  <TableHead className="font-semibold text-slate-700">Description</TableHead>
-                  <TableHead className="text-right w-[120px] font-semibold text-slate-700">Amount</TableHead>
-                  <TableHead className="w-[150px] font-semibold text-slate-700">Category</TableHead>
-                  <TableHead className="w-[100px] font-semibold text-slate-700">Actions</TableHead>
+                <TableRow className="bg-[var(--muted)] border-b border-[var(--border)]">
+                  <TableHead className="w-[120px] font-semibold text-[var(--foreground)] py-4">Date</TableHead>
+                  <TableHead className="font-semibold text-[var(--foreground)]">Description</TableHead>
+                  <TableHead className="text-right w-[120px] font-semibold text-[var(--foreground)]">Amount</TableHead>
+                  <TableHead className="w-[150px] font-semibold text-[var(--foreground)]">Category</TableHead>
+                  <TableHead className="w-[100px] font-semibold text-[var(--foreground)]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -93,9 +96,8 @@ export default function Transactions() {
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </Card>
         )}
-      </div>
     </LayoutWrapper>
   )
 }
