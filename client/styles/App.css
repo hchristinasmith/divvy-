@@ -138,24 +138,39 @@ body {
   --sidebar-ring: oklch(40% 0.05 32 / 0.5);
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* Base styles */
+* {
+  border-color: var(--border);
+  outline-color: rgba(var(--ring), 0.5);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 .btn {
-  @apply px-5 py-2 rounded-lg font-semibold shadow-md
-    bg-[color:var(--primary)] 
-    text-[color:var(--primary-foreground)] 
-    hover:bg-[color:var(--accent)] 
-    focus:outline-none 
-    focus:ring-4 
-    focus:ring-[color:var(--ring)] 
-    active:bg-[color:var(--secondary)] 
-    transition-colors 
-    duration-200;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn:hover {
+  background-color: var(--accent);
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+.btn:active {
+  background-color: var(--secondary);
+}
+
+.btn {
+  transition: all 0.2s ease;
 }

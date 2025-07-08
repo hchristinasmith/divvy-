@@ -83,22 +83,22 @@ export default function TargetsOverview({
 <div>
       <div className="grid grid-cols-3 gap-6 mb-8">
         <Card className="shadow-sm">
-          <CardContent className="pt-6 text-center">
+        <CardContent className="pt-2 text-center">
             <span className="block text-2xl font-semibold">{activeTargets}</span>
             <span className="text-lg font-semibold">Active Targets</span>
           </CardContent>
         </Card>
         
         <Card className="shadow-sm">
-          <CardContent className="pt-6 text-center">
-            <span className="block text-2xl font-semibold">{onTrackCount}</span>
+        <CardContent className="pt-2 text-center">
+        <span className="block text-2xl font-semibold">{onTrackCount}</span>
             <span className="text-lg font-semibold">On Track</span>
           </CardContent>
         </Card>
         
         <Card className="shadow-sm">
-          <CardContent className="pt-6 text-center">
-            <span className="block text-2xl font-semibold">{overTargetCount}</span>
+        <CardContent className="pt-2 text-center">
+        <span className="block text-2xl font-semibold">{overTargetCount}</span>
             <span className="text-lg font-semibold">Over Target</span>
           </CardContent>
         </Card>
@@ -107,29 +107,29 @@ export default function TargetsOverview({
 <div>
       <div className="grid grid-cols-4 gap-6 mb-8">
         <Card className="shadow-sm">
-          <CardContent className="pt-6 text-center">
+        <CardContent className="pt-2 text-center">
             <span className="block text-2xl font-semibold">{overallUsage}%</span>
             <span className="text-lg font-semibold">Overall Usage</span>
           </CardContent>
         </Card>
         
         <Card className="shadow-sm">
-          <CardContent className="pt-6 text-center">
+        <CardContent className="pt-2 text-center">
             <span className="block text-lg font-semibold">Total Budgeted</span>
             <span className="block text-xl font-semibold mt-1">{formatCurrency(totalBudget)}</span>
           </CardContent>
         </Card>
         
         <Card className="shadow-sm">
-          <CardContent className="pt-6 text-center">
+        <CardContent className="pt-2 text-center">
             <span className="block text-lg font-semibold">Total Spent</span>
             <span className="block text-xl font-semibold mt-1">{formatCurrency(totalSpent)}</span>
           </CardContent>
         </Card>
       
       <Card className="shadow-sm">
-        <CardContent className="pt-6 text-center">
-          <span className="text-xl font-semibold text-[color:var(--primary)]">
+      <CardContent className="pt-2 text-center">
+      <span className="block text-xl font-semibold mt-1">
             Remaining: {formatCurrency(remaining)}
           </span>
         </CardContent>

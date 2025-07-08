@@ -76,7 +76,6 @@ export default function Sidebar({
                 key={title}
                 to={url}
                 title={description}
-                onClick={onClose}
                 className={({ isActive }) =>
                   clsx(
                     'flex items-start gap-3 rounded-lg px-3 py-2 transition-colors group',
