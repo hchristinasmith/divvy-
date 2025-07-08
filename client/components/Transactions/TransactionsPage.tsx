@@ -10,7 +10,6 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import LayoutWrapper from '../LayoutWrapper'
 import SearchTxns from './SearchTxns.tsx'
 import TxnItem from './TxnItem.tsx'
-import CategoryDropdown from './CategoryDropDown.tsx'
 import { mockTransactions } from './mockTransactions'
 import { Filter, AlertCircle } from 'lucide-react'
 
