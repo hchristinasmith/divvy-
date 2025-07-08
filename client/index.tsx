@@ -5,6 +5,9 @@ import { RouterProvider } from 'react-router/dom'
 import { createBrowserRouter } from 'react-router'
 import { Auth0Provider } from '@auth0/auth0-react'
 
+// Import CSS for dark mode support
+import './styles/App.css'
+
 import routes from './routes.tsx'
 
 const queryClient = new QueryClient()
