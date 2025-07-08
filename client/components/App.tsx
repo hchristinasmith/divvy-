@@ -9,7 +9,7 @@ import Transactions from './Transactions/TransactionsPage.tsx'
 import AuthButtons from './Auth/AuthButtons.tsx'
 import UserProfile from './Auth/UserProfile.tsx'
 import DarkModeToggle from './DarkMode.tsx'
-import Targets from './Targets/targets.tsx'
+import Targets from './Targets/Targets.tsx'
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -40,9 +40,7 @@ export default function App() {
               element={
                 <Targets
                   targets={[]}
-                  onAddNewTarget={function (): void {
-                    throw new Error('Function not implemented.')
-                  }}
+                  onAddNewTarget={() => alert('Add new target functionality coming soon!')}
                 />
               }
             />
