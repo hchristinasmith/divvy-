@@ -10,6 +10,7 @@ export async function seed(knex) {
   await knex('targets').insert([
     {
       user_id: 1,
+      id:1,
       category: 'Housing',
       target_amount: 1200.0,
       period: 'monthly',
@@ -18,6 +19,7 @@ export async function seed(knex) {
     },
     {
       user_id: 1,
+      id:2,
       category: 'Food',
       target_amount: 500.0,
       period: 'monthly',
@@ -26,6 +28,7 @@ export async function seed(knex) {
     },
     {
       user_id: 2,
+      id:3,
       category: 'Entertainment',
       target_amount: 150.0,
       period: 'monthly',
