@@ -11,9 +11,9 @@ type PartialTransaction = Partial<Transaction> & {
   category_group_name: string;
 }
 import { TableCell, TableRow } from '@/components/ui/table'
-import { Pencil, Check, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { categories } from '../../../data/cats.js'
+import { Pencil, Check, X, ChevronDown, ChevronUp, ExternalLink, Globe } from 'lucide-react'
+import { Button } from '@/components/ui/button'  
+import { categories, categoryColors } from '../../../data/cats.js'
 
 interface Props {
   transaction: PartialTransaction
@@ -25,6 +25,10 @@ export default function TxnItem({ transaction }: Props) {
     category: transaction.category_group_name,
   })
   const [editing, setEditing] = useState(false)
+  const [detailsOpen, setDetailsOpen] = useState(false)
+  
+  // Check if merchant data is available
+  const hasMerchantData = transaction.merchant_name || transaction.merchant_website || transaction.merchant_logo
   
   // Format date to be more readable
   const formatDate = (dateString: string) => {
@@ -60,64 +64,131 @@ export default function TxnItem({ transaction }: Props) {
   }
 
   return (
-    <TableRow className="hover:bg-muted/50">
-      <TableCell>{formatDate(transaction.date)}</TableCell>
-      <TableCell className="max-w-[300px]">
-        {editing ? (
-          <input
-            id="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full rounded-md border border-input bg-background px-3 py-1 text-sm"
-          />
-        ) : (
-          <div className="truncate" title={transaction.description}>
-            {transaction.description}
-          </div>
-        )}
-      </TableCell>
-      <TableCell className={`text-right font-medium ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-        {formatCurrency(transaction.amount)}
-      </TableCell>
-      <TableCell>
-        {editing ? (
-          <select
-            id="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full rounded-md border border-input bg-background px-3 py-1 text-sm"
-          >
-            {Object.entries(categories).flatMap(([group, subcategories]) => [
-              <option key={group} disabled className="font-semibold">
-                {group}
-              </option>,
-              ...subcategories.map(sub => (
-                <option key={sub} value={sub}>
-                  {sub}
-                </option>
-              ))
-            ])}
-          </select>
-        ) : (
-          transaction.category_group_name
-        )}
-      </TableCell>
-      <TableCell>
-        {editing ? (
-          <div className="flex gap-2">
-            <Button size="icon" variant="ghost" onClick={handleSubmit} className="h-8 w-8 hover:bg-pink-100">
-              <Check className="h-4 w-4 text-pink-700" />
-            </Button>
-            <Button size="icon" variant="ghost" onClick={() => setEditing(false)} className="h-8 w-8 hover:bg-pink-100">
-              <X className="h-4 w-4 text-pink-500" />
-            </Button>
-          </div>
-        ) : (
-          <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="h-8 w-8 hover:bg-pink-100 hover:text-pink-700">
-            <Pencil className="h-4 w-4" />
-          </Button>
-        )}
-      </TableCell>
-    </TableRow>
+    <>
+      <TableRow className="hover:bg-slate-50 border-b transition-colors">
+        <TableCell className="py-3 text-slate-600 font-medium">{formatDate(transaction.date)}</TableCell>
+        <TableCell className="max-w-[300px] py-3">
+          {editing ? (
+            <input
+              id="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none"
+              autoFocus
+            />
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <div className="truncate font-medium" title={transaction.description}>
+                  {transaction.description}
+                </div>
+                {transaction.is_subscription && (
+                  <span className="px-1.5 py-0.5 bg-pink-100 text-pink-700 text-xs rounded-full font-medium">
+                    Subscription
+                  </span>
+                )}
+              </div>
+              {hasMerchantData && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-6 px-2 text-xs text-slate-500 hover:text-blue-600"
+                  onClick={() => setDetailsOpen(!detailsOpen)}
+                >
+                  Details {detailsOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                </Button>
+              )}
+            </div>
+          )}
+        </TableCell>
+        <TableCell className={`text-right font-medium py-3 ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
+          <span className="inline-block">{formatCurrency(transaction.amount)}</span>
+        </TableCell>
+        <TableCell className="py-3">
+          {editing ? (
+            <select
+              id="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none"
+            >
+              {Object.entries(categories).flatMap(([group, subcategories]) => [
+                <option key={group} disabled className="font-semibold">
+                  {group}
+                </option>,
+                ...subcategories.map(sub => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+                ))
+              ])}
+            </select>
+          ) : (
+            <span 
+              className="px-2 py-1 rounded-md text-white text-sm inline-block"
+              style={{
+                backgroundColor: categoryColors[transaction.category_group_name as keyof typeof categoryColors] || '#94a3b8',
+                opacity: 0.9
+              }}
+            >
+              {transaction.category_group_name}
+            </span>
+          )}
+        </TableCell>
+        <TableCell className="py-3">
+          {editing ? (
+            <div className="flex gap-2 justify-end">
+              <Button size="icon" variant="ghost" onClick={handleSubmit} className="h-8 w-8 hover:bg-pink-100 transition-colors">
+                <Check className="h-4 w-4 text-pink-700" />
+              </Button>
+              <Button size="icon" variant="ghost" onClick={() => setEditing(false)} className="h-8 w-8 hover:bg-pink-100 transition-colors">
+                <X className="h-4 w-4 text-pink-500" />
+              </Button>
+            </div>
+          ) : (
+            <div className="flex justify-end">
+              <Button size="icon" variant="ghost" onClick={() => setEditing(true)} className="h-8 w-8 hover:bg-pink-100 hover:text-pink-700 transition-colors">
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </TableCell>
+      </TableRow>
+      
+      {/* Merchant details dropdown */}
+      {!editing && hasMerchantData && detailsOpen && (
+        <TableRow className="bg-slate-50">
+          <TableCell colSpan={5} className="py-3 px-4">
+            <div className="flex items-start gap-4 p-3 bg-white rounded-md border border-slate-200 shadow-sm">
+              {transaction.merchant_logo && (
+                <div className="flex-shrink-0">
+                  <img 
+                    src={transaction.merchant_logo} 
+                    alt={transaction.merchant_name || 'Merchant logo'} 
+                    className="w-12 h-12 rounded-md object-contain border border-slate-200 bg-white p-1"
+                  />
+                </div>
+              )}
+              <div className="flex-grow">
+                {transaction.merchant_name && (
+                  <h4 className="font-medium text-slate-800 mb-1">{transaction.merchant_name}</h4>
+                )}
+                {transaction.merchant_website && (
+                  <a 
+                    href={transaction.merchant_website} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                  >
+                    <Globe size={14} />
+                    {transaction.merchant_website.replace(/^https?:\/\//, '')}
+                  </a>
+                )}
+              </div>
+            </div>
+          </TableCell>
+        </TableRow>
+      )}
+    </>
   )
 }

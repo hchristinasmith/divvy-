@@ -44,7 +44,7 @@ export default function App() {
                 />
               }
             />
-            <Route path="/manage-subscriptions" element={<Subscriptions />} />
+            <Route path="/subscriptions" element={<Subscriptions />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/transactions" element={<Transactions />} />
           </Routes>

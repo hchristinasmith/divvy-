@@ -35,4 +35,7 @@ export interface Transaction {
   merchant_name: string
   merchant_website: string
   merchant_logo: string
+  
+  // Flags
+  is_subscription?: boolean
 }

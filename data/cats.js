@@ -1,3 +1,17 @@
+// Category colors for styling
+export const categoryColors = {
+  Appearance: '#9c27b0', // Purple
+  Education: '#2196f3', // Blue
+  Food: '#4caf50', // Green
+  Health: '#00bcd4', // Cyan
+  Household: '#ff9800', // Orange
+  Housing: '#795548', // Brown
+  Lifestyle: '#e91e63', // Pink
+  'Professional Services': '#673ab7', // Deep Purple
+  Transport: '#f44336', // Red
+  Utilities: '#607d8b', // Blue Grey
+}
+
 export const categories = {
   Appearance: [
     'Apparel and accessory stores',

@@ -32,8 +32,8 @@ const menuItems = [
     description: 'Set and track your goals',
   },
   {
-    title: 'Manage Subscripitons',
-    url: '/manage-subscriptions',
+    title: 'Manage Subscriptions',
+    url: '/subscriptions',
     icon: CalendarSearch,
     description: 'Manage your subscriptions',
   },
