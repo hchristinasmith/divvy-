@@ -168,7 +168,7 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
               {/* Tooltip */}
               {showTooltip && tooltipContent && (
                 <div 
-                  className="fixed z-50 bg-white/80 backdrop-blur-md text-black rounded-lg py-2 px-3 shadow-xl border border-white/10 transition-all duration-150 pointer-events-none"
+                  className="fixed z-50 bg-white/80 backdrop-blur-md  rounded-lg py-2 px-3 shadow-xl border border-white/10 transition-all duration-150 pointer-events-none"
                   style={{
                     left: `${tooltipPosition.x - 315}px`,
                     top: `${tooltipPosition.y - 310}px`,
@@ -202,8 +202,8 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
                           className="w-4 h-4 rounded-full shadow-sm" 
                           style={{ backgroundColor: cat.color }}
                         ></div>
-                        <span className="font-medium text-white">{cat.name}</span>
-                        <span className="text-sm text-white/80">
+                        <span className="font-bold  opacity-80">{cat.name}</span>
+                        <span className="text-sm opacity-50">
                           ${cat.amount.toFixed(2)} ({cat.percentage.toFixed(1)}%)
                         </span>
                       </div>
@@ -226,13 +226,13 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
                               className="p-3 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-between hover:bg-white/20 transition-colors duration-200 cursor-pointer"
                             >
                               <div className="flex-1">
-                                <div className="font-medium">{transaction.description}</div>
-                                <div className="text-sm opacity-70">
+                                <div className="font-medium opacity-70">{transaction.description}</div>
+                                <div className="text-sm opacity-50">
                                   {transaction.date ? format(new Date(transaction.date), 'MMM d, yyyy') : ''}
                                   {transaction.account_name && ` • ${transaction.account_name}`}
                                 </div>
                               </div>
-                              <div className="text-right font-semibold">
+                              <div className="text-right opacity-50 font-semibold">
                                 ${Math.abs(transaction.amount).toFixed(2)}
                               </div>
                             </div>
