@@ -1,5 +1,5 @@
 import { Target } from '../../../models/targets'
-import { PencilIcon } from 'lucide-react'
+import { PencilIcon, TrashIcon } from 'lucide-react'
 
 interface TargetCardProps {
   target: Target & {
@@ -9,9 +9,10 @@ interface TargetCardProps {
   formatCurrency: (amount: number) => string
   onEdit?: (target: Target & { spent: number; status: string }) => void
   showEditIcon?: boolean
+  onDelete?: () => void
 }
 
-export function TargetsCard({ target, formatCurrency, onEdit, showEditIcon = false }: TargetCardProps) {
+export function TargetsCard({ target, formatCurrency, onEdit, showEditIcon = false, onDelete }: TargetCardProps) {
   const usagePct = Math.min((target.spent / target.target_amount) * 100, 150)
   const isOver = target.spent > target.target_amount
   const leftOrOverAmount = Math.abs(target.target_amount - target.spent)
@@ -40,13 +41,24 @@ export function TargetsCard({ target, formatCurrency, onEdit, showEditIcon = fal
               {target.status}
             </span>
             {showEditIcon && (
-              <button 
-                onClick={() => onEdit && onEdit(target)}
-                className="p-1 rounded-full hover:bg-muted transition-colors"
-                aria-label="Edit target"
-              >
-                <PencilIcon size={16} className="text-muted-foreground hover:text-foreground" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button 
+                  onClick={() => onEdit && onEdit(target)}
+                  className="p-1 rounded-full hover:bg-muted transition-colors"
+                  aria-label="Edit target"
+                >
+                  <PencilIcon size={16} className="text-muted-foreground hover:text-foreground" />
+                </button>
+                {onDelete && (
+                  <button 
+                    onClick={onDelete}
+                    className="p-1 rounded-full hover:bg-red-100 transition-colors"
+                    aria-label="Delete target"
+                  >
+                    <TrashIcon size={16} className="text-muted-foreground hover:text-red-600" />
+                  </button>
+                )}
+              </div>
             )}
           </div>
         </div>

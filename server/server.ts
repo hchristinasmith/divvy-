@@ -7,6 +7,7 @@ import 'dotenv/config'
 import akahu from './routes/Akahu/akahuRoutes.ts'
 // import categories from './routes/categories.ts'
 import transactions from './routes/Akahu/transactionsRoutes.ts'
+import targets from './routes/targets.ts'
 
 const __filename = URL.fileURLToPath(import.meta.url)
 const __dirname = Path.dirname(__filename)
@@ -20,5 +21,6 @@ server.use(express.static(join(__dirname, './public')))
 
 server.use('/api/v1/accounts', akahu)
 server.use('/api/v1/transactions', transactions)
+server.use('/api/v1/targets', targets)
 
 export default server

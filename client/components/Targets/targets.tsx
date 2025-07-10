@@ -3,11 +3,12 @@ import LayoutWrapper from '../Layout/LayoutWrapper'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { TargetsCard } from './TargetsCard'
-import { mockTargets } from './mockTargets'
 import { SavingsGoals } from './SavingsGoals'
 import { mockSavingsGoals } from './mockSavingsGoals'
 import { useState } from 'react'
-import { PencilIcon, CheckIcon } from 'lucide-react'
+import { PencilIcon, CheckIcon, PlusIcon, Loader2 } from 'lucide-react'
+import { useTargets } from '../../hooks/useTargets'
+import { useAllTransactions } from '../../hooks/useTransactions'
 
 // This interface extends Target to include calculated fields needed for the UI
 interface TargetWithCalculations extends Target {
@@ -15,20 +16,37 @@ interface TargetWithCalculations extends Target {
   status: 'Over Target' | 'Watch' | 'Close' | 'On Track' // Calculated based on spent vs target_amount
 }
 
-export default function TargetsOverview({
-  targets,
-  onAddNewTarget,
-}: TargetsOverviewProps) {
+export default function TargetsOverview() {
   // State for edit mode toggle
   const [editMode, setEditMode] = useState(false);
+  const [isAddingTarget, setIsAddingTarget] = useState(false);
+  const [newTarget, setNewTarget] = useState<{
+    category: string;
+    target_amount: number;
+    period: string;
+  }>({ category: '', target_amount: 0, period: 'monthly' });
   
-  // Use mock data for demonstration
-  const targetsWithCalculations = mockTargets;
+  // Get transactions data
+  const { data: transactionsData } = useAllTransactions();
+  const transactions = transactionsData?.items || [];
+  
+  // Get targets data using our custom hook
+  const { targets: targetsWithCalculations, isLoading, error, addNewTarget, updateTargetAmount, removeTarget } = useTargets({
+    transactions
+  });
   
   // Handle edit actions
   const handleEditTarget = (target: any) => {
-    alert(`Edit target: ${target.category}`);
-    // In a real app, this would open a modal or navigate to an edit page
+    const newAmount = prompt(`Enter new target amount for ${target.category}:`, target.target_amount.toString());
+    
+    if (newAmount !== null) {
+      const amount = parseFloat(newAmount);
+      if (!isNaN(amount) && amount > 0) {
+        updateTargetAmount(target.category, target.period, amount);
+      } else {
+        alert('Please enter a valid amount');
+      }
+    }
   };
   
   const handleEditSavingsGoal = (goal: any) => {
@@ -76,11 +94,95 @@ export default function TargetsOverview({
               </>
             )}
           </Button>
-          <Button onClick={() => onAddNewTarget()}>New Target</Button>
+          <Button 
+            onClick={() => setIsAddingTarget(!isAddingTarget)}
+            className="flex items-center gap-1"
+          >
+            <PlusIcon size={16} />
+            New Target
+          </Button>
         </div>
       </div>
-<div>
-      <div className="grid grid-cols-3 gap-6 mb-8">
+      {isAddingTarget && (
+        <Card className="mb-6 p-4">
+          <h3 className="text-lg font-semibold mb-4">Add New Target</h3>
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Category</label>
+              <input 
+                type="text" 
+                className="w-full p-2 border rounded" 
+                value={newTarget.category}
+                onChange={(e) => setNewTarget({...newTarget, category: e.target.value})}
+                placeholder="e.g. Groceries, Entertainment"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Target Amount</label>
+              <input 
+                type="number" 
+                className="w-full p-2 border rounded" 
+                value={newTarget.target_amount || ''}
+                onChange={(e) => setNewTarget({...newTarget, target_amount: parseFloat(e.target.value)})}
+                placeholder="0.00"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Period</label>
+              <select 
+                className="w-full p-2 border rounded"
+                value={newTarget.period}
+                onChange={(e) => setNewTarget({...newTarget, period: e.target.value})}
+              >
+                <option value="monthly">Monthly</option>
+                <option value="weekly">Weekly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+            <div className="flex gap-2 mt-2">
+              <Button 
+                onClick={async () => {
+                  if (!newTarget.category || !newTarget.target_amount) {
+                    alert('Please fill in all fields');
+                    return;
+                  }
+                  try {
+                    await addNewTarget(newTarget);
+                    setNewTarget({ category: '', target_amount: 0, period: 'monthly' });
+                    setIsAddingTarget(false);
+                  } catch (err) {
+                    console.error('Failed to add target:', err);
+                  }
+                }}
+              >
+                Save Target
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setIsAddingTarget(false);
+                  setNewTarget({ category: '', target_amount: 0, period: 'monthly' });
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {isLoading ? (
+        <div className="flex justify-center items-center p-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Loading targets...</span>
+        </div>
+      ) : error ? (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          {error}
+        </div>
+      ) : (
+        <div>
+          <div className="grid grid-cols-3 gap-6 mb-8">
         <Card className="shadow-sm">
         <CardContent className="pt-2 text-center">
             <span className="block text-2xl font-semibold">{activeTargets}</span>
@@ -102,7 +204,8 @@ export default function TargetsOverview({
           </CardContent>
         </Card>
       </div>
-</div>
+        </div>
+      )}
 <div>
       <div className="grid grid-cols-4 gap-6 mb-8">
         <Card className="shadow-sm">
@@ -141,11 +244,16 @@ export default function TargetsOverview({
       <div className="grid grid-cols-3 gap-6 mb-6">
         {targetsWithCalculations.map((target) => (
           <div key={`${target.user_id}-${target.category}-${target.period}`}>
-            <TargetsCard 
+              <TargetsCard 
               target={target} 
               formatCurrency={formatCurrency}
               onEdit={handleEditTarget}
               showEditIcon={editMode}
+              onDelete={editMode ? () => {
+                if (confirm(`Are you sure you want to delete the ${target.category} target?`)) {
+                  removeTarget(target.category, target.period);
+                }
+              } : undefined}
             />
           </div>
         ))}

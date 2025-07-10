@@ -35,12 +35,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route
             path="/targets"
-            element={
-              <Targets
-                targets={[]}
-                onAddNewTarget={() => alert('Add new target functionality coming soon!')}
-              />
-            }
+            element={<Targets />}
           />
           <Route path="/subscriptions" element={<Subscriptions />} />
           <Route path="/settings" element={<Settings />} />
