@@ -42,6 +42,10 @@ export function up(knex) {
     table.string('merchant_name')
     table.string('merchant_website')
     table.string('merchant_logo')
+    
+    // Subscription
+    table.boolean('is_subscription').defaultTo(false)
+    table.string('cycle').nullable() // monthly, weekly, yearly, etc.
   })
 }
 

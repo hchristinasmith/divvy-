@@ -10,6 +10,37 @@ export async function seed(knex) {
   // Fetch data fresh
   const data = await fetchAkahuTransactions()
 
+  // Helper function to detect if a transaction might be a subscription based on description
+  const detectSubscription = (description) => {
+    const subscriptionKeywords = [
+      'netflix', 'spotify', 'disney+', 'disney plus', 'amazon prime', 'hulu', 
+      'membership', 'subscription', 'monthly', 'recurring', 'apple music',
+      'youtube premium', 'gym', 'fitness', 'audible', 'adobe', 'microsoft', 
+      'icloud', 'google one', 'dropbox', 'insurance', 'phone bill', 'internet',
+      'power', 'electricity', 'water', 'gas', 'rent', 'mortgage'
+    ]
+    
+    const lowerDesc = description.toLowerCase()
+    return subscriptionKeywords.some(keyword => lowerDesc.includes(keyword))
+  }
+  
+  // Helper function to determine subscription cycle based on description or amount
+  const determineSubscriptionCycle = (description, amount) => {
+    const lowerDesc = description.toLowerCase()
+    
+    // Check for specific keywords in description
+    if (lowerDesc.includes('annual') || lowerDesc.includes('yearly')) {
+      return 'yearly'
+    } else if (lowerDesc.includes('quarterly') || lowerDesc.includes('3 month')) {
+      return 'quarterly'
+    } else if (lowerDesc.includes('weekly') || lowerDesc.includes('7 day')) {
+      return 'weekly'
+    } else {
+      // Default to monthly for most subscriptions
+      return 'monthly'
+    }
+  }
+
   const transactionsSeeds = data.items.map((txn) => ({
     akahu_id: txn._id,
     account_id: txn._account,
@@ -40,6 +71,10 @@ export async function seed(knex) {
     merchant_name: txn.merchant?.name || null,
     merchant_website: txn.merchant?.website || null,
     merchant_logo: txn.merchant?.logo || null,
+    
+    // Determine if transaction is a subscription and its cycle
+    is_subscription: detectSubscription(txn.description),
+    cycle: detectSubscription(txn.description) ? determineSubscriptionCycle(txn.description, txn.amount) : null
   }))
 
   // Delete all existing records

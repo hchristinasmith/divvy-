@@ -8,6 +8,7 @@ import {
   ArrowRightLeft,
   CalendarSearch,
   Menu,
+  CalendarClock,
 } from 'lucide-react'
 import clsx from 'clsx'
 
@@ -36,6 +37,12 @@ export const menuItems = [
     url: '/subscriptions',
     icon: CalendarSearch,
     description: 'Manage your subscriptions',
+  },
+  {
+    title: 'Subscriptions Tracker',
+    url: '/subscriptions-tracker',
+    icon: CalendarClock,
+    description: 'Track your recurring expenses',
   },
   {
     title: 'Settings',

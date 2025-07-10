@@ -4,6 +4,7 @@ import Settings from './Settings.tsx'
 import '../../styles/App.css'
 import { useEffect } from 'react'
 import Subscriptions from '../ManageSubscriptions/Subscriptions.tsx'
+import { Subscriptions as SubscriptionsTracker } from '../Subscriptions/Subscriptions.tsx'
 import Transactions from '../Transactions/TransactionsPage.tsx'
 import Targets from '../Targets/Targets.tsx'
 import LayoutWrapper from './LayoutWrapper.tsx'
@@ -38,6 +39,7 @@ export default function App() {
             element={<Targets />}
           />
           <Route path="/subscriptions" element={<Subscriptions />} />
+          <Route path="/subscriptions-tracker" element={<SubscriptionsTracker />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/transactions" element={<Transactions />} />
         </Routes>

@@ -36,10 +36,11 @@ export interface Transaction {
   merchant_website: string
   merchant_logo: string
   
+  // Subscription tracking
+  is_subscription: boolean
+  cycle?: string // monthly, weekly, yearly, etc.
+  
   // Joined fields from accounts table
   account_name?: string
   institution_name?: string
-
-  // Flags
-  is_subscription?: boolean
 }
