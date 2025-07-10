@@ -34,7 +34,7 @@ const PageHeader = ({ className = '', sidebarOpen = false }: PageHeaderProps) =>
 >      <div className="relative max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         
         {/* Absolute centered title */}
-        <h1 className="absolute left-1/2 -translate-x-1/2 text-xl text-shadow-white">
+        <h1 className="absolute left-1/2 -translate-x-1/2 text-xl text-primary">
           {title}
         </h1>
 

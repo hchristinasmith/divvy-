@@ -19,7 +19,7 @@ type CategorySummary = {
 
 function generateColor(index: number) {
   const colors = [
-    '#C7D2FE', // Indigo-200 (softer version of #6366F1)
+    '#C7D2FE', // Indigo-200 (softer version o#6366F1)
     '#A7F3D0', // Emerald-200
     '#FDE68A', // Amber-200
     '#FCA5A5', // Red-200
@@ -33,6 +33,7 @@ function generateColor(index: number) {
 
 function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
   const expenseTransactions = transactions.filter((tx) => tx.amount < 0)
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<CategorySummary | null>(null)
 
   // Group transactions by category
@@ -76,7 +77,6 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
   const [showTooltip, setShowTooltip] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
   const [tooltipContent, setTooltipContent] = useState<CategorySummary | null>(null)
-
   return (
     <Card className="shadow-white">
       <CardHeader className="pb-2">
@@ -115,7 +115,7 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
         {!selectedCategory ? (
           <div className="summary-container max-w-4xl mx-auto">
             {/* Spending Breakdown */}
-            <div className="breakdown-card bg-[var(--primary)] font-semibold rounded rounded-full shadow-sm px-5 py-5 shadow-white rounded-lg overflow-hidden">
+            <div className="breakdown-card bg-[var(--primary)] font-semibold rounded shadow-sm px-5 py-5 shadow-white rounded-lg overflow-hidden">
               <div className="relative h-16 flex rounded-lg overflow-hidden cursor-pointer select-none">
                 {categories.map((cat, i) => (
                   <div
@@ -125,7 +125,13 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
                       backgroundColor: cat.color,
                     }}
                     className="transition-all duration-300 hover:opacity-80 relative group"
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={() => {
+                      if (expandedCategory === cat.name) {
+                        setExpandedCategory(null);
+                      } else {
+                        setExpandedCategory(cat.name);
+                      }
+                    }}
                     onMouseEnter={(e) => {
                       setHoveredIndex(i)
                       setTooltipContent(cat)
@@ -183,17 +189,75 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
                   <div className="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 w-3 h-3 rotate-45 bg-white/80"></div>
                 </div>
               )}
+              
+              {/* Category Transaction Lists - Now inside the same card */}
+              {categories.map((cat) => {
+                if (expandedCategory !== cat.name) return null;
+                
+                return (
+                  <div key={`transactions-${cat.name}`} className="mt-4 mb-2">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div 
+                          className="w-4 h-4 rounded-full shadow-sm" 
+                          style={{ backgroundColor: cat.color }}
+                        ></div>
+                        <span className="font-medium text-white">{cat.name}</span>
+                        <span className="text-sm text-white/80">
+                          ${cat.amount.toFixed(2)} ({cat.percentage.toFixed(1)}%)
+                        </span>
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => setExpandedCategory(null)}
+                        className="hover:bg-white/10 text-white"
+                      >
+                        <X size={16} />
+                      </Button>
+                    </div>
+                    
+                    <div className="rounded-lg p-2 max-h-60 overflow-y-auto bg-white/5">
+                      {cat.transactions.length > 0 ? (
+                        <div className="space-y-2">
+                          {cat.transactions.map((transaction, idx) => (
+                            <div 
+                              key={transaction.id || idx} 
+                              className="p-3 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-between hover:bg-white/20 transition-colors duration-200 cursor-pointer"
+                            >
+                              <div className="flex-1">
+                                <div className="font-medium">{transaction.description}</div>
+                                <div className="text-sm opacity-70">
+                                  {transaction.date ? format(new Date(transaction.date), 'MMM d, yyyy') : ''}
+                                  {transaction.account_name && ` • ${transaction.account_name}`}
+                                </div>
+                              </div>
+                              <div className="text-right font-semibold">
+                                ${Math.abs(transaction.amount).toFixed(2)}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-4 text-white/70">
+                          No transactions found for this category.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         ) : (
           <div className="transactions-list">
             <ScrollArea className="h-[400px] rounded-md">
-              {selectedCategory.transactions.length > 0 ? (
+              {selectedCategory && selectedCategory.transactions.length > 0 ? (
                 <div className="space-y-2">
-                  {selectedCategory.transactions.map((transaction) => (
+                  {selectedCategory.transactions.map((transaction: Transaction) => (
                     <div 
                       key={transaction.id} 
-                      className="p-3 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-between"
+                      className="p-3 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-between hover:bg-white/20 transition-colors duration-200 cursor-pointer"
                     >
                       <div className="flex-1">
                         <div className="font-medium">{transaction.description}</div>

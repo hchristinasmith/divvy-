@@ -83,7 +83,7 @@ export default function Sidebar({
                   clsx(
                     'flex items-start gap-3 rounded-lg px-3 py-2 transition-colors group',
                     isActive
-                      ? 'bg-sidebar-accent text-sidebar-accent-foreground shadow-sm'
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground  shadow-sm'
                       : 'hover:bg-sidebar-border hover:text-sidebar-foreground text-sidebar-foreground',
                   )
                 }
