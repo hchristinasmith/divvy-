@@ -7,7 +7,7 @@ import {
   TableRow,
 } from '@/components/ui/table.tsx'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import LayoutWrapper from '../LayoutWrapper'
+import LayoutWrapper from '../Layout/LayoutWrapper.tsx'
 import SearchTxns from './SearchTxns.tsx'
 import TxnItem from './TxnItem.tsx'
 import { mockTransactions } from './mockTransactions'
@@ -50,7 +50,6 @@ export default function Transactions() {
   return (
     <LayoutWrapper>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Transactions</h1>
         <div className="text-sm text-muted-foreground bg-[var(--muted)] px-3 py-1.5 rounded-full">
           {filteredTransactions.length} transactions found
         </div>

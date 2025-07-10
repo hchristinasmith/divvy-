@@ -1,5 +1,5 @@
 import { Target, TargetsOverviewProps } from '../../../models/targets'
-import LayoutWrapper from '../LayoutWrapper'
+import LayoutWrapper from '../Layout/LayoutWrapper'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { TargetsCard } from './TargetsCard'
@@ -57,7 +57,6 @@ export default function TargetsOverview({
   return (
     <LayoutWrapper>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Financial Targets</h1>
         <div className="flex gap-2">
           <Button 
             variant={editMode ? "secondary" : "outline"}

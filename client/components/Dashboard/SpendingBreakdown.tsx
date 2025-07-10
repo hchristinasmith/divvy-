@@ -20,15 +20,15 @@ type CategorySummary = {
 
 function generateColor(index: number) {
   const colors = [
-    '#6366F1', // Indigo-500
-    '#34D399', // Emerald-400
-    '#FBBF24', // Amber-400
-    '#F87171', // Red-400
-    '#60A5FA', // Blue-400
-    '#A78BFA', // Violet-400
-    '#67E8F9', // Cyan-300
-    '#FB923C', // Orange-400
-  ]
+    '#C7D2FE', // Indigo-200 (softer version of #6366F1)
+    '#A7F3D0', // Emerald-200
+    '#FDE68A', // Amber-200
+    '#FCA5A5', // Red-200
+    '#BFDBFE', // Blue-200
+    '#DDD6FE', // Violet-200
+    '#A5F3FC', // Cyan-200
+    '#FDBA74', // Orange-200
+  ];
   return colors[index % colors.length]
 }
 
@@ -79,7 +79,7 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
   const [tooltipContent, setTooltipContent] = useState<CategorySummary | null>(null)
 
   return (
-    <Card className="shadow-lg backdrop-blur-sm rounded-xl">
+    <Card className="shadow-white">
       <CardHeader>
         <CardTitle className="text-xl font-semibold flex items-center gap-2">
           {selectedCategory ? (

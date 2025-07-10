@@ -50,10 +50,10 @@ body {
   --radius: 0.625rem;
 
   /* Backgrounds & Surface */
-  --background: oklch(0.9323 0.0357 0); /* soft pinkish-white */
+  --background:oklch(0.9588 0.04 335); /* soft pinkish-white */
   --foreground: oklch(0.38 0.02 30); /* soft chocolate brown */
 
-  --card: oklch(94% 0.04 335); /* pale lavender-pink */
+  --card: oklch(0.989 0.04 335); /* light soft pink */
   --card-foreground: oklch(0.38 0.02 30);
 
   --popover: oklch(96% 0.03 325); /* pinky cream */
@@ -148,6 +148,24 @@ body {
 body {
   background-color: var(--background);
   color: var(--foreground);
+}
+
+/* Custom white shadow */
+.shadow-white {
+  box-shadow: 0 4px 15px -3px #be918b, 0 2px 8px -2px rgba(255, 255, 255, 0.2);
+}
+
+.shadow-white-sm {
+  box-shadow: 0 2px 8px -2px rgba(255, 255, 255, 0.25);
+}
+
+.shadow-white-lg {
+  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.3), 0 8px 15px -6px rgba(255, 255, 255, 0.2);
+}
+
+/* Text shadow for headings */
+.text-shadow-white {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .btn {

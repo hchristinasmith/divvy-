@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 
-const menuItems = [
+export const menuItems = [
   {
     title: 'Dashboard',
     url: '/',
@@ -66,12 +66,12 @@ export default function Sidebar({
             isOpen ? 'translate-x-0' : '-translate-x-full',
           )}
         >
-          <div className="mb-10">
-            <h2 className="text-2xl font-bold text-sidebar-primary">Divvy</h2>
-            <p className="text-sm text-muted-foreground">Manage yah moneys</p>
+          <div className="mb-6">
+            <h2 className="text-2xl text-sidebar-primary">Divvy</h2>
+            <p className="text-sm text-muted-foreground">hold the reins</p>
           </div>
 
-          <nav className="space-y-5">
+          <nav className="space-y-6">
             {menuItems.map(({ title, url, icon: Icon, description }) => (
               <NavLink
                 key={title}

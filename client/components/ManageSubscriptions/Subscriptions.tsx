@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { Plus, Bell, Trash2, Edit, Search, Calendar, CreditCard, RefreshCw, ExternalLink, PencilIcon, CheckIcon } from 'lucide-react'
 import { formatDistanceToNowStrict, isBefore, addDays, format } from 'date-fns'
 import { mockTransactions } from '../Transactions/mockTransactions'
-import LayoutWrapper from '../LayoutWrapper'
+import LayoutWrapper from '../Layout/LayoutWrapper.js'
 import { Button } from '@/components/ui/button'
 import { categoryColors } from '../../../data/cats.js'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -77,7 +77,6 @@ const Subscriptions: React.FC = () => {
   return (
     <LayoutWrapper>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Manage Subscriptions</h1>
         <div className="flex gap-2">
           <Button>
             <Plus className="mr-2 h-4 w-4" /> Add Subscription

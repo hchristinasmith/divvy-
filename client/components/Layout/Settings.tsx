@@ -1,11 +1,11 @@
-import '../styles/App.css'
+import '../../styles/App.css'
 import React, { useState, useEffect } from 'react'
 import { Check, X, CreditCard, Bell, Shield, User, Mail, ExternalLink } from 'lucide-react'
 import LayoutWrapper from './LayoutWrapper'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
-import { Button } from './ui/button'
-import { Switch } from './ui/switch'
-import { Label } from './ui/label'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
+import { Button } from '../ui/button'
+import { Switch } from '../ui/switch'
+import { Label } from '../ui/label'
 
 interface SettingsCardProps {
   title: string;
@@ -63,9 +63,7 @@ const Settings: React.FC = () => {
   return (
     <LayoutWrapper>
       <div className="space-y-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Settings</h1>
-        </div>
+        
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Bank Integration */}

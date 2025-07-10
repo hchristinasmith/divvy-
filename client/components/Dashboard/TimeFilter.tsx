@@ -18,7 +18,7 @@ export default function TimeFilter({
   onSelect,
 }: TimeFilterProps) {
   return (
-    <div className="backdrop-blur-sm rounded-full px-4 py-2 shadow inline-flex">
+    <div className="backdrop-blur-sm rounded-full px-4 py-2 shadow-white inline-flex">
       <nav className="flex items-center space-x-2 text-sm font-medium">
         {periods.map(({ label, value }, index) => (
           <span key={value} className="flex items-center">
