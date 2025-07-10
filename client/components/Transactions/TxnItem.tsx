@@ -155,36 +155,64 @@ export default function TxnItem({ transaction }: Props) {
         </TableCell>
       </TableRow>
       
-      {/* Merchant details dropdown */}
-      {!editing && hasMerchantData && detailsOpen && (
+      {/* Transaction details dropdown */}
+      {!editing && detailsOpen && (
         <TableRow className="bg-[var(--card)]">
           <TableCell colSpan={5} className="py-3 px-4">
-            <div className="flex items-start gap-4 p-3 bg-[var(--primary)]/10 rounded-xl border border-[var(--primary)]/10 shadow-white backdrop-blur-sm">
-              {transaction.merchant_logo && (
-                <div className="flex-shrink-0">
-                  <img 
-                    src={transaction.merchant_logo} 
-                    alt={transaction.merchant_name || 'Merchant logo'} 
-                    className="w-12 h-12 rounded-xl object-contain border border-[var(--primary)]/20 bg-white/5 p-1 shadow-white"
-                  />
+            <div className="flex flex-col gap-4 p-3 bg-[var(--primary)]/10 rounded-xl border border-[var(--primary)]/10 shadow-white backdrop-blur-sm">
+              
+              {/* Merchant Information */}
+              {hasMerchantData && (
+                <div className="flex items-start gap-4">
+                  {transaction.merchant_logo && (
+                    <div className="flex-shrink-0">
+                      <img 
+                        src={transaction.merchant_logo} 
+                        alt={transaction.merchant_name || 'Merchant logo'} 
+                        className="w-12 h-12 rounded-xl object-contain border border-[var(--primary)]/20 bg-white/5 p-1 shadow-white"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-grow">
+                    {transaction.merchant_name && (
+                      <h4 className="font-medium text-primary mb-1">{transaction.merchant_name}</h4>
+                    )}
+                    {transaction.merchant_website && (
+                      <a 
+                        href={transaction.merchant_website} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors duration-200"
+                      >
+                        <Globe size={14} />
+                        {transaction.merchant_website.replace(/^https?:\/\//, '')}
+                      </a>
+                    )}
+                  </div>
                 </div>
               )}
-              <div className="flex-grow">
-                {transaction.merchant_name && (
-                  <h4 className="font-medium text-primary mb-1">{transaction.merchant_name}</h4>
-                )}
-                {transaction.merchant_website && (
-                  <a 
-                    href={transaction.merchant_website} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors duration-200"
-                  >
-                    <Globe size={14} />
-                    {transaction.merchant_website.replace(/^https?:\/\//, '')}
-                  </a>
-                )}
+              
+              {/* Account Information */}
+              <div className="flex flex-col gap-2 mt-2">
+                <h4 className="text-sm font-medium text-primary">Transaction Details</h4>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                  {transaction.account_name && (
+                    <>
+                      <div className="text-muted-foreground">Account:</div>
+                      <div className="text-primary">{transaction.account_name}</div>
+                    </>
+                  )}
+                  {transaction.institution_name && (
+                    <>
+                      <div className="text-muted-foreground">Institution:</div>
+                      <div className="text-primary">{transaction.institution_name}</div>
+                    </>
+                  )}
+                  <div className="text-muted-foreground">Transaction ID:</div>
+                  <div className="text-primary text-xs opacity-70">{transaction.id}</div>
+                </div>
               </div>
+              
             </div>
           </TableCell>
         </TableRow>

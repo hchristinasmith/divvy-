@@ -99,6 +99,64 @@ export default function TransactionFilters({
           </div>
         )}
       </div>
+      
+      {/* Date Filter */}
+      <div className="relative">
+        <Button 
+          variant="outline" 
+          size="sm"
+          className="bg-[var(--card)] border-[var(--primary)]/30 text-primary flex items-center gap-1"
+          onClick={() => {
+            setShowDatePicker(!showDatePicker)
+            setShowCategories(false)
+          }}
+        >
+          <CalendarIcon className="h-4 w-4" />
+          <span>{getDateRangeText()}</span>
+          {showDatePicker ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        </Button>
+        
+        {showDatePicker && (
+          <div className="absolute z-10 mt-1 w-72 rounded-md bg-[var(--card)] shadow-lg border border-[var(--primary)]/30 p-3">
+            <div className="mb-3">
+              <div className="text-sm font-medium mb-1">From date</div>
+              <input 
+                type="date" 
+                className="w-full rounded-md border border-[var(--primary)]/30 bg-[var(--background)] p-2 text-sm"
+                value={dateRange.from ? dateRange.from.toISOString().split('T')[0] : ''}
+                onChange={(e) => {
+                  const date = e.target.value ? new Date(e.target.value) : null
+                  handleDateSelect('from', date)
+                }}
+              />
+            </div>
+            <div className="mb-3">
+              <div className="text-sm font-medium mb-1">To date</div>
+              <input 
+                type="date" 
+                className="w-full rounded-md border border-[var(--primary)]/30 bg-[var(--background)] p-2 text-sm"
+                value={dateRange.to ? dateRange.to.toISOString().split('T')[0] : ''}
+                onChange={(e) => {
+                  const date = e.target.value ? new Date(e.target.value) : null
+                  handleDateSelect('to', date)
+                }}
+              />
+            </div>
+            <div className="flex justify-end">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-primary hover:bg-[var(--primary)]/30"
+                onClick={() => {
+                  onDateRangeChange({ from: undefined, to: undefined })
+                }}
+              >
+                Clear dates
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Reset Filters */}
       <Button 

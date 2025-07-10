@@ -7,6 +7,7 @@ import {
   TableRow,
 } from '@/components/ui/table.tsx'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import LayoutWrapper from '../Layout/LayoutWrapper.tsx'
 import SearchTxns from './SearchTxns.tsx'
 import TxnItem from './TxnItem.tsx'
@@ -158,16 +159,32 @@ export default function Transactions() {
               </div>
               <h3 className="text-lg font-medium text-white">Error loading transactions</h3>
               <p className="text-white opacity-50 max-w-sm">There was a problem fetching your transaction data. Please try again later.</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-4 bg-[var(--card)] border-[var(--primary)]/30 text-primary"
+                onClick={() => window.location.reload()}
+              >
+                Try Again
+              </Button>
             </CardContent>
           </Card>
         ) : filteredTransactions.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12 px-4 text-center">
               <div className="p-3 rounded-full bg-white/10 mb-3 shadow-white">
-                <AlertCircle className="h-6 w-6 text-white opacity-70" />
+                <Filter className="h-6 w-6 text-white opacity-70" />
               </div>
               <h3 className="text-lg font-medium text-white">No transactions found</h3>
-              <p className="text-white opacity-50 max-w-sm">No transactions match your current search criteria. Try adjusting your filters or search term.</p>
+              <p className="text-white opacity-50 max-w-sm mb-4">No transactions match your current filter criteria. Try adjusting your filters or search term.</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="bg-[var(--card)] border-[var(--primary)]/30 text-primary"
+                onClick={handleResetFilters}
+              >
+                Reset Filters
+              </Button>
             </CardContent>
           </Card>
         ) : (
