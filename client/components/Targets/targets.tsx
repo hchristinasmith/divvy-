@@ -1,4 +1,4 @@
-import { Target, TargetsOverviewProps } from '../../../models/targets'
+import { Targets, TargetsOverviewProps } from '../../../models/targets'
 import LayoutWrapper from '../Layout/LayoutWrapper'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -6,12 +6,12 @@ import { TargetsCard } from './TargetsCard'
 import { SavingsGoals } from './SavingsGoals'
 import { mockSavingsGoals } from './mockSavingsGoals'
 import { useState } from 'react'
-import { PencilIcon, CheckIcon, PlusIcon, Loader2, CalendarHeart } from 'lucide-react'
+import { PencilIcon, CheckIcon, PlusIcon, Loader2, CalendarHeart, Target } from 'lucide-react'
 import { useTargets } from '../../hooks/useTargets'
 import { useAllTransactions } from '../../hooks/useTransactions'
 
 // This interface extends Target to include calculated fields needed for the UI
-interface TargetWithCalculations extends Target {
+interface TargetWithCalculations extends Targets {
   spent: number // This would come from actual transaction data
   status: 'Over Target' | 'Watch' | 'Close' | 'On Track' // Calculated based on spent vs target_amount
 }
@@ -245,7 +245,7 @@ export default function TargetsOverview() {
       </div>
       <div>
     <div className="flex items-center gap-2 bg-[var(--card)] text-foreground px-3 py-2 rounded rounded-full shadow-white mb-4 w-fit">
-      <PlusIcon size={18} />
+      <Target size={18} />
       <h2 className="text-lg font-semibold">Spending Targets</h2>
     </div>
       <div className="grid grid-cols-3 gap-6 mb-6">

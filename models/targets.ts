@@ -1,4 +1,4 @@
-export interface Target{
+export interface Targets{
     user_id: number
     category: string
     target_amount: number
@@ -8,6 +8,6 @@ export interface Target{
 }
 
 export interface TargetsOverviewProps {
-    targets: Target[]
+    targets: Targets[]
     onAddNewTarget: () => void
 }
