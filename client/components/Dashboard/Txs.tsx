@@ -36,7 +36,7 @@ export default function Transactions({ transactions }: TransactionsProps) {
               <div className="transaction-info">
                 <span className="transaction-title">{tx.description}</span>
                 <span className="transaction-date">{formatDate(tx.date.toString())}</span>
-                <span className="transaction-category">{tx.category?.name || 'Uncategorized'}</span>
+                <span className="transaction-category">{tx.category_name? || 'Uncategorized'}</span>
               </div>
               <div className="transaction-amount">
                 {tx.amount >= 0 ? '+' : ''}{tx.amount.toFixed(2)}

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { ChartPie, X, ArrowLeft } from 'lucide-react'
 import type { Transaction } from 'models/transactions.ts'
-import { ScrollArea } from '@radix-ui/react-scroll-area'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
 
