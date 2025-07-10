@@ -5,7 +5,6 @@ import type { Transaction } from 'models/transactions.ts'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
-import { CalendarHeart } from 'lucide-react'
 interface SpendingBreakdownProps {
   transactions: Transaction[]
 }
@@ -80,17 +79,17 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
 
   return (
     <Card className="shadow-white">
-      <CardHeader>
-        <CardTitle className="text-xl font-semibold flex items-center gap-2">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-xl  font-semibold">
           {selectedCategory ? (
-            <div className="flex items-center justify-between w-full">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div 
-                  className="w-4 h-4 rounded-full" 
+                  className="w-4 h-4 rounded-full shadow-sm" 
                   style={{ backgroundColor: selectedCategory.color }}
                 ></div>
-                <span>{selectedCategory.name}</span>
-                <span className="text-sm font-normal ml-2">
+                <span className="text-white">{selectedCategory.name}</span>
+                <span className="text-sm font-normal ml-2  text-white opacity-80">
                   ${selectedCategory.amount.toFixed(2)} ({selectedCategory.percentage.toFixed(1)}%)
                 </span>
               </div>
@@ -98,25 +97,25 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setSelectedCategory(null)}
-                className="ml-auto"
+                className="ml-auto hover:bg-white/10 text-white"
               >
                 <ArrowLeft size={16} className="mr-1" />
                 Back
               </Button>
             </div>
           ) : (
-            <>
-              <ChartPie size={20} />
-              Spending Breakdown
-            </>
+            <div className='flex items-center gap-2 bg-[var(--primary)] font-semibold rounded rounded-full shadow-sm px-3 py-2 text-white'>
+              <ChartPie size={25} className="inline-block" />
+              <span>Spending Breakdown</span>
+            </div>
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-6">
+      <CardContent className="pt-4">
         {!selectedCategory ? (
           <div className="summary-container max-w-4xl mx-auto">
             {/* Spending Breakdown */}
-            <div className="breakdown-card shadow-white">
+            <div className="breakdown-card bg-[var(--primary)] font-semibold rounded rounded-full shadow-sm px-5 py-5 shadow-white rounded-lg overflow-hidden">
               <div className="relative h-16 flex rounded-lg overflow-hidden cursor-pointer select-none">
                 {categories.map((cat, i) => (
                   <div

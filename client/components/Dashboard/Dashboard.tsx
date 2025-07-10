@@ -20,7 +20,7 @@ function Dashboard() {
     Utilities: 150,
     // Add other categories and their budget targets here
   }
-  
+
   const {
     data: accountsData,
     isLoading: isLoadingAccounts,
@@ -93,13 +93,13 @@ function Dashboard() {
               <>
                 <SpendingBreakdown transactions={filteredTransactions} />
                 <Card className="shadow-white">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-semibold">
-                      <CalendarHeart />
-                      Monthly Overview
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-xl flex items-center bg-[var(--primary)] font-semibold rounded rounded-full shadow-sm px-3 py-2 gap-2 text-white">
+                      <CalendarHeart className="inline-block" />
+                      <span>Monthly Overview</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="pt-4">
                     <ActualVTarget
                       transactions={filteredTransactions}
                       targets={targets}

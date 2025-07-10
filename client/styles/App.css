@@ -60,7 +60,7 @@ body {
   --popover-foreground: oklch(0.38 0.02 30);
 
   /* Primary (highlight) colors */
-  --primary: oklch(89.549% 0.06639 340.55); /* rose pink */
+  --primary: oklch(0.8618 0.0937 340.55); /* rose pink */
   --primary-foreground: oklch(0.98 0.015 330); /* soft near-white pink */
 
   --secondary: oklch(80% 0.045 30); /* soft beige-tan */
@@ -166,6 +166,9 @@ body {
 /* Text shadow for headings */
 .text-shadow-white {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+}
+.text-shadow-brown {
+  text-shadow: 0 0 3px rgba(95, 61, 61, 0.5), 0 1px 20px rgba(95, 61, 61, 0.3);
 }
 
 .btn {
