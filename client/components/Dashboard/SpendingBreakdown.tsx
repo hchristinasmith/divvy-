@@ -217,13 +217,13 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
                       </Button>
                     </div>
                     
-                    <div className="rounded-lg p-2 max-h-60 overflow-y-auto bg-white/5">
+                    <div className="rounded-xl p-2 max-h-60 overflow-y-auto bg-white/5">
                       {cat.transactions.length > 0 ? (
                         <div className="space-y-2">
                           {cat.transactions.map((transaction, idx) => (
                             <div 
                               key={transaction.id || idx} 
-                              className="p-3 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-between hover:bg-white/20 transition-colors duration-200 cursor-pointer"
+                              className="p-3 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-between hover:bg-white/20 transition-colors duration-200 cursor-pointer"
                             >
                               <div className="flex-1">
                                 <div className="font-medium opacity-70">{transaction.description}</div>
@@ -257,7 +257,7 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
                   {selectedCategory.transactions.map((transaction: Transaction) => (
                     <div 
                       key={transaction.id} 
-                      className="p-3 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-between hover:bg-white/20 transition-colors duration-200 cursor-pointer"
+                      className="p-3 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-between hover:bg-white/20 transition-colors duration-200 cursor-pointer"
                     >
                       <div className="flex-1">
                         <div className="font-medium">{transaction.description}</div>

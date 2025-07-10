@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown } from 'lucide-react'
+import { TrendingUp, TrendingDown, Target } from 'lucide-react'
 import { useState } from 'react'
 
 interface Transaction {
@@ -30,10 +30,11 @@ function ActualVTarget({ transactions = [], targets }: ActualVTargetProps) {
     : [];
 
   return (
-    <div className="p-4 rounded-lg  bg-[var(--primary)] font-semibold rounded rounded-full shadow-sm px-5 py-5 shadow-white max-w-3xl mx-auto">
-      <h2 className="text-2xl  mb-6 text-white">
-        Target vs Actual Spending
-      </h2>
+    <div className="p-4 rounded-xl  bg-[var(--primary)] font-semibold rounded rounded-full shadow-sm px-5 py-5 shadow-white max-w-3xl mx-auto">
+    <div className='flex items-center gap-2 bg-[var(--card)] font-semibold rounded rounded-full shadow-sm px-3 py-2 text-primary mb-4'>
+      <Target size={25} className="inline-block" />
+      <span>Target vs Actual Spending</span>
+    </div>
       <div className="grid gap-4">
         {Object.entries(targets).map(([category, target]) => {
           const actual = actuals[category] || 0
@@ -55,15 +56,15 @@ function ActualVTarget({ transactions = [], targets }: ActualVTargetProps) {
             <div key={category}>
               <div
                 onClick={() => setSelectedCategory(isSelected ? null : category)}
-                className={`group p-3 rounded-md ${isSelected ? 'bg-[var(--primary)] shadow-white' : 'bg-[var(--card)]'} hover:bg-[var(--primary)] hover:shadow-white transition-colors cursor-pointer`}
+                className={`group p-3 rounded-md ${isSelected ? 'bg-[var(--foreground)] text-white' : 'bg-[var(--card)]'} hover:bg-[var(--foreground)] hover:text-white transition-colors cursor-pointer`}
               >
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-medium text-primary">{category}</span>
+                  <span className={`font-medium ${isSelected ? 'text-white' : 'text-primary'}`}>{category}</span>
                   <div className="flex items-center space-x-4">
-                    <span className="text-primary">
+                    <span className={isSelected ? 'text-white' : 'text-primary'}>
                       ${actual.toFixed(2)} ({actualPct.toFixed(0)}%)
                     </span>
-                    <span className="text-primary">Target: {targetPct}%</span>
+                    <span className={isSelected ? 'text-white' : 'text-primary'}>Target: {targetPct}%</span>
                     <TrendIcon className={`w-5 h-5 ${trendColor}`} />
                     <span
                       className={`px-2 py-0.5 rounded text-sm font-semibold ${statusBg} ${statusTextColor}`}
@@ -108,7 +109,7 @@ function ActualVTarget({ transactions = [], targets }: ActualVTargetProps) {
               )}
               
               {isSelected && categoryTransactions.length === 0 && (
-                <div className="mt-2 mb-4 ml-4 p-3 bg-[var(--card)] rounded-md">
+                <div className="mt-2 mb-4 p-3 bg-[var(--card)] rounded-md">
                   <p className="text-center text-primary opacity-70">No transactions found for this category</p>
                 </div>
               )}
