@@ -19,16 +19,16 @@ export function TargetsCard({ target, formatCurrency, onEdit, showEditIcon = fal
 
   // Status colors based on status text
   const statusColors = {
-    'Over Target': 'bg-red-100 text-red-700',
-    'Watch': 'bg-yellow-100 text-yellow-700',
-    'Close': 'bg-blue-100 text-blue-700',
-    'On Track': 'bg-green-100 text-green-700',
+    'Over Target': 'bg-red-500/20 text-red-500',
+    'Watch': 'bg-yellow-500/20 text-yellow-500',
+    'Close': 'bg-blue-500/20 text-blue-500',
+    'On Track': 'bg-green-500/20 text-green-500',
   }
   
   const statusClass = statusColors[target.status] ?? 'bg-gray-100 text-gray-700'
 
   return (
-    <div className="rounded-lg border border-[color:var(--border)] bg-card p-4 shadow-sm hover:shadow-md transition">
+    <div className="rounded-xl border border-[color:var(--border)] bg-[var(--card)] p-4 shadow-white hover:shadow-lg transition-all duration-200">
       <div className="mb-2">
         <div className="flex justify-between items-center">
           <h3 className="text-xl font-semibold">
@@ -36,7 +36,7 @@ export function TargetsCard({ target, formatCurrency, onEdit, showEditIcon = fal
           </h3>
           <div className="flex items-center gap-2">
             <span
-              className={`inline-block px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-wide ${statusClass}`}
+              className={`inline-block px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-wide ${statusClass} shadow-white`}
             >
               {target.status}
             </span>
@@ -72,18 +72,18 @@ export function TargetsCard({ target, formatCurrency, onEdit, showEditIcon = fal
         <span className="italic">{target.period}</span>
       </div>
 
-      <div className="relative h-6 bg-muted rounded overflow-hidden mb-2">
+      <div className="relative h-6 bg-white/10 rounded-lg overflow-hidden mb-2 shadow-inner">
         <div
-          className={`absolute top-0 left-0 h-6 rounded bg-[color:var(--primary)] transition-all duration-500 ease-in-out`}
+          className={`absolute top-0 left-0 h-6 rounded-lg bg-[color:var(--primary)] transition-all duration-500 ease-in-out shadow-white`}
           style={{ width: `${usagePct}%` }}
         />
-        <span className="absolute right-2 top-1 text-[color:var(--primary-foreground)] font-semibold text-sm select-none">
+        <span className="absolute right-2 top-1 text-white font-semibold text-sm select-none drop-shadow-md">
           {usagePct.toFixed(0)}% Used
         </span>
       </div>
 
       <div
-        className={`font-semibold ${isOver ? 'text-red-600' : 'text-green-600'}`}
+        className={`font-semibold ${isOver ? 'text-red-500' : 'text-green-500'} px-3 py-1 rounded-lg bg-white/5 inline-block shadow-white`}
       >
         {isOver
           ? `${formatCurrency(leftOrOverAmount)} over`

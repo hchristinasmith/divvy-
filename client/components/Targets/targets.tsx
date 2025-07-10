@@ -6,7 +6,7 @@ import { TargetsCard } from './TargetsCard'
 import { SavingsGoals } from './SavingsGoals'
 import { mockSavingsGoals } from './mockSavingsGoals'
 import { useState } from 'react'
-import { PencilIcon, CheckIcon, PlusIcon, Loader2 } from 'lucide-react'
+import { PencilIcon, CheckIcon, PlusIcon, Loader2, CalendarHeart } from 'lucide-react'
 import { useTargets } from '../../hooks/useTargets'
 import { useAllTransactions } from '../../hooks/useTransactions'
 
@@ -80,7 +80,7 @@ export default function TargetsOverview() {
             variant={editMode ? "secondary" : "outline"}
             size="sm"
             onClick={() => setEditMode(!editMode)}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 shadow-white"
           >
             {editMode ? (
               <>
@@ -96,7 +96,7 @@ export default function TargetsOverview() {
           </Button>
           <Button 
             onClick={() => setIsAddingTarget(!isAddingTarget)}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 bg-[var(--primary)] text-white shadow-white"
           >
             <PlusIcon size={16} />
             New Target
@@ -104,14 +104,17 @@ export default function TargetsOverview() {
         </div>
       </div>
       {isAddingTarget && (
-        <Card className="mb-6 p-4">
-          <h3 className="text-lg font-semibold mb-4">Add New Target</h3>
+        <Card className="mb-6 p-4 bg-[var(--card)] rounded-xl shadow-white">
+          <div className="flex items-center gap-2 bg-[var(--primary)] text-white px-3 py-2 rounded rounded-full shadow-white mb-4 w-fit">
+            <PlusIcon size={16} />
+            <h3 className="font-semibold">Add New Target</h3>
+          </div>
           <div className="grid grid-cols-1 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Category</label>
               <input 
                 type="text" 
-                className="w-full p-2 border rounded" 
+                className="w-full p-2 border rounded bg-white/5 text-foreground border-[var(--border)]" 
                 value={newTarget.category}
                 onChange={(e) => setNewTarget({...newTarget, category: e.target.value})}
                 placeholder="e.g. Groceries, Entertainment"
@@ -121,7 +124,7 @@ export default function TargetsOverview() {
               <label className="block text-sm font-medium mb-1">Target Amount</label>
               <input 
                 type="number" 
-                className="w-full p-2 border rounded" 
+                className="w-full p-2 border rounded bg-white/5 text-foreground border-[var(--border)]" 
                 value={newTarget.target_amount || ''}
                 onChange={(e) => setNewTarget({...newTarget, target_amount: parseFloat(e.target.value)})}
                 placeholder="0.00"
@@ -130,7 +133,7 @@ export default function TargetsOverview() {
             <div>
               <label className="block text-sm font-medium mb-1">Period</label>
               <select 
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded bg-white/5 text-foreground border-[var(--border)]"
                 value={newTarget.period}
                 onChange={(e) => setNewTarget({...newTarget, period: e.target.value})}
               >
@@ -154,6 +157,7 @@ export default function TargetsOverview() {
                     console.error('Failed to add target:', err);
                   }
                 }}
+                className="bg-[var(--primary)] text-white hover:bg-[var(--primary)]/90 shadow-white"
               >
                 Save Target
               </Button>
@@ -163,6 +167,7 @@ export default function TargetsOverview() {
                   setIsAddingTarget(false);
                   setNewTarget({ category: '', target_amount: 0, period: 'monthly' });
                 }}
+                className="hover:bg-white/20 transition-colors duration-200 shadow-white"
               >
                 Cancel
               </Button>
@@ -172,34 +177,34 @@ export default function TargetsOverview() {
       )}
 
       {isLoading ? (
-        <div className="flex justify-center items-center p-12">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Loading targets...</span>
+        <div className="flex justify-center items-center p-12 bg-[var(--card)] rounded-xl shadow-white">
+          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <span className="ml-2 font-medium">Loading targets...</span>
         </div>
       ) : error ? (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+        <div className="bg-red-100/20 border border-red-400/50 text-red-700 px-4 py-3 rounded-xl mb-6 shadow-white">
           {error}
         </div>
       ) : (
         <div>
           <div className="grid grid-cols-3 gap-6 mb-8">
-        <Card className="shadow-sm">
-        <CardContent className="pt-2 text-center">
-            <span className="block text-2xl font-semibold">{activeTargets}</span>
+        <Card className="shadow-white bg-[var(--card)] rounded-xl">
+        <CardContent className="pt-4 text-center">
+            <span className="block text-2xl font-semibold text-[var(--primary)]">{activeTargets}</span>
             <span className="text-lg font-semibold">Active Targets</span>
           </CardContent>
         </Card>
         
-        <Card className="shadow-sm">
-        <CardContent className="pt-2 text-center">
-        <span className="block text-2xl font-semibold">{onTrackCount}</span>
+        <Card className="shadow-white bg-[var(--card)] rounded-xl">
+        <CardContent className="pt-4 text-center">
+        <span className="block text-2xl font-semibold text-green-500">{onTrackCount}</span>
             <span className="text-lg font-semibold">On Track</span>
           </CardContent>
         </Card>
         
-        <Card className="shadow-sm">
-        <CardContent className="pt-2 text-center">
-        <span className="block text-2xl font-semibold">{overTargetCount}</span>
+        <Card className="shadow-white bg-[var(--card)] rounded-xl">
+        <CardContent className="pt-4 text-center">
+        <span className="block text-2xl font-semibold text-red-500">{overTargetCount}</span>
             <span className="text-lg font-semibold">Over Target</span>
           </CardContent>
         </Card>
@@ -208,39 +213,41 @@ export default function TargetsOverview() {
       )}
 <div>
       <div className="grid grid-cols-4 gap-6 mb-8">
-        <Card className="shadow-sm">
-        <CardContent className="pt-2 text-center">
-            <span className="block text-2xl font-semibold">{overallUsage}%</span>
+        <Card className="shadow-white bg-[var(--card)] rounded-xl">
+        <CardContent className="pt-4 text-center">
+            <span className="block text-2xl font-semibold text-[var(--primary)]">{overallUsage}%</span>
             <span className="text-lg font-semibold">Overall Usage</span>
           </CardContent>
         </Card>
         
-        <Card className="shadow-sm">
-        <CardContent className="pt-2 text-center">
+        <Card className="shadow-white bg-[var(--card)] rounded-xl">
+        <CardContent className="pt-4 text-center">
             <span className="block text-lg font-semibold">Total Budgeted</span>
-            <span className="block text-xl font-semibold mt-1">{formatCurrency(totalBudget)}</span>
+            <span className="block text-xl font-semibold mt-1 text-[var(--primary)]">{formatCurrency(totalBudget)}</span>
           </CardContent>
         </Card>
         
-        <Card className="shadow-sm">
-        <CardContent className="pt-2 text-center">
+        <Card className="shadow-white bg-[var(--card)] rounded-xl">
+        <CardContent className="pt-4 text-center">
             <span className="block text-lg font-semibold">Total Spent</span>
-            <span className="block text-xl font-semibold mt-1">{formatCurrency(totalSpent)}</span>
+            <span className="block text-xl font-semibold mt-1 text-[var(--primary)]">{formatCurrency(totalSpent)}</span>
           </CardContent>
         </Card>
       
-      <Card className="shadow-sm">
-      <CardContent className="pt-2 text-center">
-      <span className="block text-xl font-semibold mt-1">
-            Remaining: {formatCurrency(remaining)}
-          </span>
+      <Card className="shadow-white bg-[var(--card)] rounded-xl">
+      <CardContent className="pt-4 text-center">
+      <span className="block text-lg font-semibold">Remaining</span>
+            <span className="block text-xl font-semibold mt-1 text-[var(--primary)]">{formatCurrency(remaining)}</span>
         </CardContent>
       </Card>
       </div>
 
       </div>
       <div>
-    <h2 className='text-2xl font-semibold'> Spending Targets</h2>
+    <div className="flex items-center gap-2 bg-[var(--card)] text-foreground px-3 py-2 rounded rounded-full shadow-white mb-4 w-fit">
+      <PlusIcon size={18} />
+      <h2 className="text-lg font-semibold">Spending Targets</h2>
+    </div>
       <div className="grid grid-cols-3 gap-6 mb-6">
         {targetsWithCalculations.map((target) => (
           <div key={`${target.user_id}-${target.category}-${target.period}`}>
@@ -260,7 +267,10 @@ export default function TargetsOverview() {
       </div>
       </div>
       <div className="mb-6">
-      <h2 className="text-2xl font-semibold mb-4">Savings Goals</h2>
+      <div className="flex items-center gap-2 bg-[var(--card)] text-foreground px-3 py-2 rounded rounded-full shadow-white mb-4 w-fit">
+        <CalendarHeart size={18} />
+        <h2 className="text-lg font-semibold">Savings Goals</h2>
+      </div>
       
       <SavingsGoals 
         goals={mockSavingsGoals}

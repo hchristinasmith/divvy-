@@ -13,7 +13,7 @@ export function SavingsGoalCard({ goal, formatCurrency, onEdit, showEditIcon = f
   const completionPct = Math.round((goal.current_amount / goal.target_amount) * 100)
   
   return (
-    <div className="rounded-lg border border-[color:var(--border)] bg-card p-4 shadow-sm hover:shadow-md transition">
+    <div className="rounded-xl border border-[color:var(--border)] bg-[var(--card)] p-4 shadow-white hover:shadow-lg transition-all duration-200">
       <div className="mb-2">
         <div className="flex justify-between items-start">
           <div>
@@ -23,7 +23,7 @@ export function SavingsGoalCard({ goal, formatCurrency, onEdit, showEditIcon = f
           {showEditIcon && (
             <button 
               onClick={() => onEdit && onEdit(goal)}
-              className="p-1 rounded-full hover:bg-muted transition-colors"
+              className="p-1 rounded-full hover:bg-white/20 transition-colors duration-200"
               aria-label="Edit savings goal"
             >
               <PencilIcon size={16} className="text-muted-foreground hover:text-foreground" />
@@ -33,21 +33,21 @@ export function SavingsGoalCard({ goal, formatCurrency, onEdit, showEditIcon = f
       </div>
 
       <div className="mb-3">
-        <span className="text-lg">
-          {formatCurrency(goal.current_amount)} of {formatCurrency(goal.target_amount)}
+        <span className="text-lg font-medium">
+          <span className="text-[var(--primary)]">{formatCurrency(goal.current_amount)}</span> of {formatCurrency(goal.target_amount)}
         </span>
-        <div className="text-muted-foreground">{goal.target_date}</div>
+        <div className="text-muted-foreground opacity-70">{goal.target_date}</div>
       </div>
 
-      <div className="relative h-2 bg-muted rounded-full overflow-hidden mb-2">
+      <div className="relative h-2 bg-white/10 rounded-full overflow-hidden mb-2 shadow-inner">
         <div
-          className="absolute top-0 left-0 h-2 rounded-full bg-[color:var(--primary)]" 
+          className="absolute top-0 left-0 h-2 rounded-full bg-[color:var(--primary)] shadow-white" 
           style={{ width: `${completionPct}%` }}
         />
       </div>
 
       <div className="flex justify-between items-center">
-        <span className="text-xl font-semibold">{completionPct}%</span>
+        <span className="text-xl font-semibold text-[var(--primary)]">{completionPct}%</span>
         <span className="text-muted-foreground">Complete</span>
       </div>
     </div>
@@ -63,16 +63,18 @@ interface SavingsGoalsProps {
 
 export function SavingsGoals({ goals, formatCurrency, onEdit, showEditIcon = false }: SavingsGoalsProps) {
   return (
-    <div className="space-y-4">
-      {goals.map((goal) => (
-        <SavingsGoalCard 
-          key={goal.id} 
-          goal={goal} 
-          formatCurrency={formatCurrency}
-          onEdit={onEdit}
-          showEditIcon={showEditIcon}
-        />
-      ))}
+    <div className="bg-[var(--card)] rounded-xl p-5 shadow-white">
+      <div className="space-y-4 max-h-60 overflow-y-auto">
+        {goals.map((goal) => (
+          <SavingsGoalCard 
+            key={goal.id} 
+            goal={goal} 
+            formatCurrency={formatCurrency}
+            onEdit={onEdit}
+            showEditIcon={showEditIcon}
+          />
+        ))}
+      </div>
     </div>
   )
 }
