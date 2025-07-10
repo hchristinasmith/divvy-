@@ -50,10 +50,10 @@ body {
   --radius: 0.625rem;
 
   /* Backgrounds & Surface */
-  --background:oklch(0.9588 0.04 335); /* soft pinkish-white */
+  --background:oklch(0.9235 0.0617 335); /* soft pinkish-white */
   --foreground: oklch(0.38 0.02 30); /* soft chocolate brown */
 
-  --card: oklch(0.989 0.04 335); /* light soft pink */
+  --card: oklch(0.9588 0.04 335); /* light soft pink */
   --card-foreground: oklch(0.38 0.02 30);
 
   --popover: oklch(96% 0.03 325); /* pinky cream */
@@ -99,7 +99,7 @@ body {
   --background: oklch(22% 0.08 35); /* deep cocoa brown */
   --foreground: oklch(94% 0.02 340); /* soft rosy-pink off-white */
 
-  --card: oklch(30% 0.06 38); /* dark milk chocolate */
+  --card: oklch(0.1693 0.0903 44.62); /* dark milk chocolate */
   --card-foreground: oklch(94% 0.02 340);
 
   --popover: oklch(28% 0.05 36);
@@ -152,7 +152,7 @@ body {
 
 /* Custom white shadow */
 .shadow-white {
-  box-shadow: 0 4px 15px -3px #be918b, 0 2px 8px -2px rgba(255, 255, 255, 0.2);
+  box-shadow: 2px 4px 5px 2px #ffffff, 0 2px 8px -2px rgba(255, 255, 255, 0.2);
 }
 
 .shadow-white-sm {

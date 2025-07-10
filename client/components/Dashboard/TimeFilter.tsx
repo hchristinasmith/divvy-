@@ -29,7 +29,7 @@ export default function TimeFilter({
               }}
               className={`px-2 py-1 rounded-full transition-all duration-300 ${
                 selectedDays === value
-                  ? 'bg-primary text-white font-bold shadow-sm'
+                  ? 'bg-[var(--primary)] text-white font-bold shadow-sm'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
             >

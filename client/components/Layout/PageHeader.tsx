@@ -3,6 +3,7 @@ import { menuItems } from './Sidebar';
 import UserProfile from '../Layout/Auth/UserProfile';
 import AuthButtons from '../Layout/Auth/AuthButtons';
 import DarkModeToggle from './DarkMode';
+import { useEffect } from 'react';
 
 interface PageHeaderProps {
   className?: string;
@@ -19,7 +20,12 @@ const PageHeader = ({ className = '', sidebarOpen = false }: PageHeaderProps) =>
   });
 
   const title = currentRoute?.title || 'Page';
-
+  useEffect(() => {
+    console.log('PageHeader mounted');
+    const buttons = document.querySelectorAll('[aria-label="Toggle sidebar"]');
+    console.log('Header buttons:', buttons.length);
+  }, []);
+  
   return (
 <header
   className={`fixed top-0 z-10 bg-[var(--card)] bg-opacity-90 backdrop-blur-md  transition-all duration-300 ${

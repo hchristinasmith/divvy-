@@ -5,8 +5,7 @@ import ActualVTarget from './ActualVTarget.tsx'
 import TimeFilter from './TimeFilter.tsx'
 import SpendingBreakdown from './SpendingBreakdown.tsx'
 import LayoutWrapper from '../Layout/LayoutWrapper.tsx'
-
-import { Button } from '@/components/ui/button'
+import { CalendarHeart } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -21,6 +20,7 @@ function Dashboard() {
     Utilities: 150,
     // Add other categories and their budget targets here
   }
+  
   const {
     data: accountsData,
     isLoading: isLoadingAccounts,
@@ -95,6 +95,7 @@ function Dashboard() {
                 <Card className="shadow-white">
                   <CardHeader>
                     <CardTitle className="text-xl font-semibold">
+                      <CalendarHeart />
                       Monthly Overview
                     </CardTitle>
                   </CardHeader>

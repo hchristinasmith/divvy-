@@ -5,7 +5,7 @@ import type { Transaction } from 'models/transactions.ts'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
-
+import { CalendarHeart } from 'lucide-react'
 interface SpendingBreakdownProps {
   transactions: Transaction[]
 }
@@ -116,7 +116,7 @@ function SpendingBreakdown({ transactions = [] }: SpendingBreakdownProps) {
         {!selectedCategory ? (
           <div className="summary-container max-w-4xl mx-auto">
             {/* Spending Breakdown */}
-            <div className="breakdown-card">
+            <div className="breakdown-card shadow-white">
               <div className="relative h-16 flex rounded-lg overflow-hidden cursor-pointer select-none">
                 {categories.map((cat, i) => (
                   <div

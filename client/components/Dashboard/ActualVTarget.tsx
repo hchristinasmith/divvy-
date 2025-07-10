@@ -18,7 +18,7 @@ function ActualVTarget({ transactions = [], targets }: ActualVTargetProps) {
   }, {})
 
   return (
-    <div className="p-4 bg-stone-50 rounded-lg shadow-white max-w-3xl mx-auto">
+    <div className="p-4 rounded-lg shadow-white max-w-3xl mx-auto">
       <h2 className="text-2xl font-semibold mb-6 text-stone-800">
         Target vs Actual Spending
       </h2>
