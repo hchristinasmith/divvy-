@@ -27,7 +27,7 @@ const capitalize = (str: string) => {
 
 export function Subscriptions() {
   const { subscriptions, monthlyCost, annualCost, isLoading, error } = useSubscriptions()
-  const [sortBy, setSortBy] = useState<'amount' | 'date' | 'description'>('amount')
+  const [sortBy, setSortBy] = useState<'amount' | 'date' | 'description'>('date')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
   // Handle sorting
