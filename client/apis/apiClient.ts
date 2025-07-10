@@ -10,9 +10,22 @@ export async function getAllAccounts(): Promise<Item[]> {
 
 // Get all transactions
 export async function getAllTransactions() {
-  const response = await request.get(`${rootURL}/transactions`)
-  console.log('API response (transactions):', response.body)
-  return response.body
+  try {
+    const response = await request.get(`${rootURL}/transactions`)
+    console.log('API response (transactions):', response.body)
+    
+    // Check if response body is empty or not an array
+    if (!response.body || !Array.isArray(response.body)) {
+      console.warn('Transaction response is not an array:', response.body)
+      return { items: [] }
+    }
+    
+    // Format the response to match what the components expect
+    return { items: response.body }
+  } catch (error) {
+    console.error('Error fetching transactions:', error)
+    throw error
+  }
 }
 
 export async function updateTransactionCategory(

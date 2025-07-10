@@ -2,7 +2,7 @@ import type { Transaction } from '../../../models/transactions'
 
 export function transactionsByCategory(transactions: Transaction[]) {
   return transactions.reduce<Record<string, Transaction[]>>((groups, tx) => {
-    const category = tx.category?.name || 'Unknown'
+    const category = tx.category_group_name || 'Unknown'
     if (!groups[category]) {
       groups[category] = []
     }

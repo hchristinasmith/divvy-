@@ -5,7 +5,7 @@
 export function up(knex) {
   return knex.schema.createTable('accounts', (table) => {
     table.increments('id').primary()
-    table.string('akahu_id').unique() // _id from Akahu
+    table.string('akahu_id').unique() 
     table.string('_authorisation')
     table.string('_credentials')
 
@@ -19,7 +19,7 @@ export function up(knex) {
     table.string('formatted_account')
     table.string('status')
     table.string('type')
-    table.json('attributes') // array of strings
+    table.json('attributes')
 
     // Balance
     table.string('currency')

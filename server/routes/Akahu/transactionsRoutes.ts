@@ -10,7 +10,7 @@ import knex from 'server/db/knex'
 router.get('/', async (req, res) => {
   try {
     const transactions = await knex('transactions')
-      .join('accounts', 'transactions.account_id', 'accounts.id as accounts_id')
+      .join('accounts', 'transactions.account_id', 'accounts.akahu_id')
       .select(
         'transactions.id',
         'transactions.date',
@@ -26,6 +26,8 @@ router.get('/', async (req, res) => {
       )
       .orderBy('transactions.date', 'desc')
 
+    console.log(`GET /transactions: Found ${transactions.length} transactions`)
+    
     res.json(transactions)
   } catch (err) {
     console.error(err)

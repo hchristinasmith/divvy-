@@ -1,8 +1,15 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-// Load variables from .env
-dotenv.config()
+// Get the directory path
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const rootPath = path.resolve(__dirname, '../../')
+
+// Load variables from .env with explicit path
+dotenv.config({ path: path.resolve(rootPath, '.env') })
 
 const token = process.env.AKAHU_USER_TOKEN
 const appId = process.env.AKAHU_APP_ID
