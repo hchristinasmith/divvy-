@@ -30,11 +30,11 @@ function ActualVTarget({ transactions = [], targets }: ActualVTargetProps) {
     : [];
 
   return (
-    <div className="p-4 rounded-xl  bg-[var(--primary)] font-semibold rounded rounded-full shadow-sm px-5 py-5 shadow-white max-w-3xl mx-auto">
-    <div className='flex items-center gap-2 bg-[var(--card)] font-semibold rounded rounded-full shadow-sm px-3 py-2 text-primary mb-4'>
-      <Target size={25} className="inline-block" />
-      <span>Target vs Actual Spending</span>
-    </div>
+    <div className="p-4 rounded-xl bg-white/5 font-medium px-5 py-5 shadow-white max-w-3xl mx-auto">
+      <div className='flex items-center gap-2 bg-[var(--card)] font-semibold rounded-full shadow-white px-3 py-2 text-primary mb-6'>
+        <Target size={18} />
+        <span>Target vs Actual Spending</span>
+      </div>
       <div className="grid gap-4">
         {Object.entries(targets).map(([category, target]) => {
           const actual = actuals[category] || 0
@@ -48,69 +48,65 @@ function ActualVTarget({ transactions = [], targets }: ActualVTargetProps) {
 
           // Status badge
           const statusBg = isOver ? 'bg-red-100' : 'bg-green-100'
-          const statusTextColor = isOver ? 'text-red-700' : 'text-green-700'
+          const statusText = isOver ? 'text-red-800' : 'text-green-800'
 
           const isSelected = selectedCategory === category;
 
           return (
-            <div key={category}>
-              <div
-                onClick={() => setSelectedCategory(isSelected ? null : category)}
-                className={`group p-3 rounded-md ${isSelected ? 'bg-[var(--foreground)] text-white' : 'bg-[var(--card)]'} hover:bg-[var(--foreground)] hover:text-white transition-colors cursor-pointer`}
-              >
-                <div className="flex justify-between items-center mb-1">
-                  <span className={`font-medium ${isSelected ? 'text-white' : 'text-primary'}`}>{category}</span>
-                  <div className="flex items-center space-x-4">
-                    <span className={isSelected ? 'text-white' : 'text-primary'}>
-                      ${actual.toFixed(2)} ({actualPct.toFixed(0)}%)
-                    </span>
-                    <span className={isSelected ? 'text-white' : 'text-primary'}>Target: {targetPct}%</span>
-                    <TrendIcon className={`w-5 h-5 ${trendColor}`} />
-                    <span
-                      className={`px-2 py-0.5 rounded text-sm font-semibold ${statusBg} ${statusTextColor}`}
-                    ></span>
-                  </div>
+            <div key={category} className="mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <span className="font-semibold">{category}</span>
+                  <span className="text-sm opacity-70">
+                    ${actual.toFixed(2)} / ${target.toFixed(2)}
+                  </span>
                 </div>
-
-                {/* Progress bar container */}
-                <div className="relative h-6 bg-stone-300 rounded overflow-hidden">
-                  {/* Actual spending bar */}
-                  <div
-                    className={`absolute top-0 left-0 h-6 bg-stone-700 transition-all duration-500 ease-in-out`}
-                    style={{ width: `${actualPct}%` }}
-                  ></div>
-
-                  {/* Target marker line */}
-                  <div
-                    className="absolute top-0 bottom-0 border-l-2 border-stone-400"
-                    style={{ left: `${targetPct}%` }}
-                  ></div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusBg} ${statusText} shadow-white`}
+                  >
+                    <TrendIcon size={12} className="mr-1" />
+                    {isOver ? 'Over' : 'Under'} by ${Math.abs(actual - target).toFixed(2)}
+                  </span>
                 </div>
               </div>
-              
-              {/* Transactions list for selected category */}
-              {isSelected && categoryTransactions.length > 0 && (
-                <div className="mt-2 mb-4 ml-4 p-3 bg-[var(--card)] rounded-md max-h-60 overflow-y-auto">
-                  <h4 className="font-medium mb-2 text-primary">Recent Transactions</h4>
-                  <div className="space-y-2">
-                    {categoryTransactions.map((tx, i) => (
-                      <div key={i} className="flex justify-between items-center p-2 hover:bg-white/10 rounded">
-                        <div>
-                          <div className="font-medium">{tx.description}</div>
-                          <div className="text-xs opacity-70">
-                            {new Date(tx.date).toLocaleDateString()} • {tx.account_name || 'Unknown Account'}
+
+              {/* Progress bar */}
+              <div className="relative h-3 bg-white/10 rounded-full overflow-hidden shadow-white">
+                {/* Actual bar */}
+                <div
+                  className={`absolute top-0 left-0 h-full ${isOver ? 'bg-red-500' : 'bg-green-500'} transition-all duration-500`}
+                  style={{ width: `${actualPct}%` }}
+                ></div>
+                {/* Target marker */}
+                <div
+                  className="absolute top-0 h-full border-l-2 border-white/80"
+                  style={{ left: `${targetPct}%` }}
+                ></div>
+              </div>
+
+              {/* Category transactions if selected */}
+              {selectedCategory === category && (
+                <div className="mt-4 p-4 bg-white/5 rounded-xl max-h-60 overflow-y-auto shadow-white">
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-white/70"></div>
+                    Recent Transactions
+                  </h4>
+                  {categoryTransactions.length > 0 ? (
+                    <div className="space-y-3">
+                      {categoryTransactions.map((tx, i) => (
+                        <div key={i} className="flex justify-between items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-colors duration-200 cursor-pointer">
+                          <div>
+                            <div className="font-medium">{tx.description}</div>
+                            <div className="text-xs opacity-70 mt-1">{new Date(tx.date).toLocaleDateString()}</div>
                           </div>
+                          <div className="font-semibold">${Math.abs(tx.amount).toFixed(2)}</div>
                         </div>
-                        <div className="font-semibold">${tx.amount.toFixed(2)}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {isSelected && categoryTransactions.length === 0 && (
-                <div className="mt-2 mb-4 p-3 bg-[var(--card)] rounded-md">
-                  <p className="text-center text-primary opacity-70">No transactions found for this category</p>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-3 opacity-70">No transactions found</div>
+                  )}
                 </div>
               )}
             </div>

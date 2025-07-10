@@ -54,17 +54,27 @@ function Dashboard() {
 
   return (
     <LayoutWrapper>
-    
-      {isLoadingTransactions && <Skeleton className="h-24 w-full rounded-xl" />}
+      {/* Loading and Error States */}
+      {isLoadingTransactions && (
+        <div className="space-y-4">
+          <Skeleton className="h-10 w-64 rounded-full" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Skeleton className="h-[400px] w-full rounded-xl" />
+            <Skeleton className="h-[400px] w-full rounded-xl" />
+          </div>
+        </div>
+      )}
       {isErrorTransactions && (
-        <Alert variant="destructive">
+        <Alert variant="destructive" className="rounded-xl border-none shadow-white">
           <AlertTitle>{(errorTransactions as Error).message}</AlertTitle>
         </Alert>
       )}
 
       {transactionsData && (
-        <div className="space-y-6">
-          <div className="flex justify-center">
+        <div className="space-y-8">
+          {/* Dashboard Header */}
+          <div className="flex items-center justify-center">
+          
             <TimeFilter
               selectedDays={selectedDays}
               onSelect={setSelectedDays}
@@ -91,21 +101,31 @@ function Dashboard() {
 
             return (
               <>
-                <SpendingBreakdown transactions={filteredTransactions} />
-                <Card className="shadow-white">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xl flex items-center bg-[var(--primary)] font-semibold rounded rounded-full shadow-sm px-3 py-2 gap-2 text-white">
-                      <CalendarHeart className="inline-block" />
-                      <span>Monthly Overview</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-4">
-                    <ActualVTarget
-                      transactions={filteredTransactions}
-                      targets={targets}
-                    />
-                  </CardContent>
-                </Card>
+                {/* Main Content Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Left Column */}
+                  <div className="space-y-8">
+                    <SpendingBreakdown transactions={filteredTransactions} />
+                  </div>
+                  
+                  {/* Right Column */}
+                  <div className="space-y-8">
+                    <Card className="shadow-white bg-[var(--card)] rounded-xl overflow-hidden border-none">
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-xl flex items-center bg-[var(--primary)] font-semibold rounded-full shadow-sm px-3 py-2 gap-2 text-white">
+                          <CalendarHeart className="inline-block" size={18} />
+                          <span>Monthly Overview</span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <ActualVTarget
+                          transactions={filteredTransactions}
+                          targets={targets}
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
               </>
             );
           })()}

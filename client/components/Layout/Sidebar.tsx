@@ -106,7 +106,7 @@ export default function Sidebar({
           onClick={onToggle}
           aria-label="Toggle sidebar"
           className={clsx(
-            'fixed top-0 left-0 z-50 h-16 w-10 bg-sidebar-primary text-sidebar-primary-foreground',
+            'fixed top-0 left-0 z-50 h-17 w-10 bg-sidebar-primary text-sidebar-primary-foreground',
             'rounded-r-xl flex items-center justify-center transition-all duration-300',
             'shadow-[4px_0_6px_rgba(0,0,0,0.05)]', // 👈 custom shadow to the right
             isOpen ? 'ml-[250px]' : 'ml-0',

@@ -28,13 +28,11 @@ const PageHeader = ({ className = '', sidebarOpen = false }: PageHeaderProps) =>
   
   return (
 <header
-  className={`fixed top-0 z-10 bg-[var(--card)] bg-opacity-90 backdrop-blur-md  transition-all duration-300 ${
+  className={`fixed top-0 py-2 z-10 bg-[var(--card)] bg-opacity-90 backdrop-blur-md  transition-all duration-300 ${
     sidebarOpen ? 'left-[240px] w-[calc(100%-240px)]' : 'left-0 w-full'
   } ${className}`}
 >      <div className="relative max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        
-        {/* Absolute centered title */}
-        <h1 className="absolute left-1/2 -translate-x-1/2 text-xl text-primary">
+        <h1 className="absolute left-1/2  bg-[var(--card)] text-[var(--primary)] px-7 py-3 rounded-full  -translate-x-1/2 text-xl text-primary">
           {title}
         </h1>
 

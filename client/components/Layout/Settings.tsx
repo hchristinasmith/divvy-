@@ -1,6 +1,6 @@
 import '../../styles/App.css'
 import React, { useState, useEffect } from 'react'
-import { Check, X, CreditCard, Bell, Shield, User, Mail, ExternalLink } from 'lucide-react'
+import { Check, X, CreditCard, Bell, Shield, User, Mail, ExternalLink, Palette } from 'lucide-react'
 import LayoutWrapper from './LayoutWrapper'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
@@ -37,6 +37,11 @@ const Settings: React.FC = () => {
     const isDarkMode = document.documentElement.classList.contains('dark')
     return isDarkMode
   })
+  const [selectedTheme, setSelectedTheme] = useState(() => {
+    // Get theme from data-theme attribute or default to pink
+    const theme = document.documentElement.getAttribute('data-theme') || 'pink'
+    return theme
+  })
 
   // Effect to keep dark mode toggle in sync with DOM changes
   useEffect(() => {
@@ -46,6 +51,10 @@ const Settings: React.FC = () => {
           const isDark = document.documentElement.classList.contains('dark')
           setDarkMode(isDark)
         }
+        if (mutation.attributeName === 'data-theme') {
+          const theme = document.documentElement.getAttribute('data-theme') || 'pink'
+          setSelectedTheme(theme)
+        }
       })
     })
     
@@ -53,6 +62,15 @@ const Settings: React.FC = () => {
     
     return () => observer.disconnect()
   }, [])
+  
+  // Effect to apply theme changes
+  useEffect(() => {
+    // Apply theme to document element
+    document.documentElement.setAttribute('data-theme', selectedTheme)
+    
+    // Store theme preference in localStorage
+    localStorage.setItem('theme', selectedTheme)
+  }, [selectedTheme])
 
   const handleConnectAkahu = () => {
     // For now, just toggle connection status
@@ -66,6 +84,61 @@ const Settings: React.FC = () => {
         
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Theme Selection */}
+          <SettingsCard 
+            title="Theme Settings"
+            description="Customize the appearance of your dashboard"
+          >
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Palette className="h-5 w-5 text-slate-500" />
+                  <Label htmlFor="dark-mode" className="font-medium">Dark Mode</Label>
+                </div>
+                <Switch 
+                  id="dark-mode" 
+                  checked={darkMode} 
+                  onCheckedChange={(checked) => {
+                    if (checked) {
+                      document.documentElement.classList.add('dark')
+                      localStorage.setItem('darkMode', 'true')
+                    } else {
+                      document.documentElement.classList.remove('dark')
+                      localStorage.setItem('darkMode', 'false')
+                    }
+                    setDarkMode(checked)
+                  }} 
+                />
+              </div>
+              
+              <div className="mt-4">
+                <Label className="font-medium mb-2 block">Color Theme</Label>
+                <div className="grid grid-cols-1 gap-2">
+                  <ThemeOption 
+                    id="pink-theme" 
+                    name="Pink" 
+                    checked={selectedTheme === 'pink'}
+                    onChange={() => setSelectedTheme('pink')}
+                    primaryColor="#d4a0a2" // Approximation of the pink theme primary color
+                  />
+                  <ThemeOption 
+                    id="blue-theme" 
+                    name="Blue" 
+                    checked={selectedTheme === 'blue'}
+                    onChange={() => setSelectedTheme('blue')}
+                    primaryColor="#a0b8d4" // Approximation of the blue theme primary color
+                  />
+                  <ThemeOption 
+                    id="green-theme" 
+                    name="Green" 
+                    checked={selectedTheme === 'green'}
+                    onChange={() => setSelectedTheme('green')}
+                    primaryColor="#a0d4b0" // Approximation of the green theme primary color
+                  />
+                </div>
+              </div>
+            </div>
+          </SettingsCard>
           {/* Bank Integration */}
           <SettingsCard 
             title="Bank Connection"
@@ -205,5 +278,34 @@ const Settings: React.FC = () => {
     </LayoutWrapper>
   )
 }
+
+// Theme option component for selecting themes
+interface ThemeOptionProps {
+  id: string;
+  name: string;
+  checked: boolean;
+  onChange: () => void;
+  primaryColor: string;
+}
+
+const ThemeOption: React.FC<ThemeOptionProps> = ({ id, name, checked, onChange, primaryColor }) => {
+  return (
+    <div 
+      className={`flex items-center justify-between p-3 rounded-md cursor-pointer transition-all duration-200 ${checked ? 'ring-2 ring-[var(--primary)] bg-[var(--primary-foreground)]' : 'hover:bg-[var(--muted)]'}`}
+      onClick={onChange}
+    >
+      <div className="flex items-center gap-3">
+        <div 
+          className="w-6 h-6 rounded-full" 
+          style={{ backgroundColor: primaryColor }}
+        />
+        <span className="font-medium">{name}</span>
+      </div>
+      {checked && (
+        <Check className="h-5 w-5 text-[var(--primary)]" />
+      )}
+    </div>
+  );
+};
 
 export default Settings
