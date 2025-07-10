@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import {
   Table,
   TableBody,
@@ -10,32 +10,73 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import LayoutWrapper from '../Layout/LayoutWrapper.tsx'
 import SearchTxns from './SearchTxns.tsx'
 import TxnItem from './TxnItem.tsx'
-import { mockTransactions } from './mockTransactions'
-import { Filter, AlertCircle } from 'lucide-react'
+import TransactionFilters from './TransactionFilters.tsx'
+import { Filter, AlertCircle, Loader2 } from 'lucide-react'
+import { useAllTransactions } from '../../hooks/useTransactions'
+import type { Transaction } from '../../../models/transactions'
+import { startOfDay, isAfter, isBefore, isEqual } from 'date-fns'
 
 export default function Transactions() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [filteredTransactions, setFilteredTransactions] = useState(mockTransactions)
-
-  // Filter transactions based on search term and category separately
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({ from: undefined, to: undefined })
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([])
+  
+  // Fetch transactions from API
+  const { data: transactionsData, isLoading, isError } = useAllTransactions()
+  
+  // Extract unique categories from transactions
+  const categories = useMemo(() => {
+    if (!transactionsData?.items) return []
+    
+    const uniqueCategories = new Set<string>()
+    transactionsData.items.forEach((txn: Transaction) => {
+      if (txn.category_group_name) {
+        uniqueCategories.add(txn.category_group_name)
+      }
+    })
+    
+    return Array.from(uniqueCategories).sort()
+  }, [transactionsData])
+  
+  // Update filtered transactions when API data changes or filters change
   useEffect(() => {
-    const filteredTransactions = mockTransactions.filter((txn) => {
-      // Only search in the description, not in category
-      const matchesSearch = searchTerm === '' || txn.description
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-        
-      // Category filtering is handled separately
+    if (!transactionsData?.items) return
+    
+    const filteredTransactions = transactionsData.items.filter((txn: Transaction) => {
+      // Search filter - check description
+      const matchesSearch = searchTerm === '' || 
+        (txn.description && txn.description.toLowerCase().includes(searchTerm.toLowerCase()))
+      
+      // Category filter
       const matchesCategory =
-        selectedCategory === '' || 
         selectedCategory === 'all' || 
         txn.category_group_name === selectedCategory
+      
+      // Date range filter
+      let matchesDateRange = true
+      if (dateRange.from || dateRange.to) {
+        const txnDate = new Date(txn.date)
         
-      return matchesSearch && matchesCategory
+        if (dateRange.from && dateRange.to) {
+          // Both start and end dates are set
+          matchesDateRange = 
+            (isAfter(txnDate, startOfDay(dateRange.from)) || isEqual(txnDate, startOfDay(dateRange.from))) && 
+            (isBefore(txnDate, startOfDay(dateRange.to)) || isEqual(txnDate, startOfDay(dateRange.to)))
+        } else if (dateRange.from) {
+          // Only start date is set
+          matchesDateRange = isAfter(txnDate, startOfDay(dateRange.from)) || isEqual(txnDate, startOfDay(dateRange.from))
+        } else if (dateRange.to) {
+          // Only end date is set
+          matchesDateRange = isBefore(txnDate, startOfDay(dateRange.to)) || isEqual(txnDate, startOfDay(dateRange.to))
+        }
+      }
+      
+      return matchesSearch && matchesCategory && matchesDateRange
     })
+    
     setFilteredTransactions(filteredTransactions)
-  }, [searchTerm, selectedCategory])
+  }, [transactionsData, searchTerm, selectedCategory, dateRange])
 
   // Handle search input change
   const handleSearch = (term: string) => {
@@ -46,29 +87,80 @@ export default function Transactions() {
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category)
   }
+  
+  // Handle date range change
+  const handleDateRangeChange = (range: { from: Date | undefined; to: Date | undefined }) => {
+    setDateRange(range)
+  }
+  
+  // Reset all filters
+  const handleResetFilters = () => {
+    setSearchTerm('')
+    setSelectedCategory('all')
+    setDateRange({ from: undefined, to: undefined })
+  }
 
   return (
     <LayoutWrapper>
       
       <Card className="shadow-white bg-[var(--primary)] rounded-xl mb-4">
-       
-      <CardContent className="space-y-4">
-  {/* Search Input */}
-  <div className="w-full">
-    <SearchTxns onSearch={handleSearch} />
-  </div>
+     
+        <CardContent className="space-y-4">
+          {/* Search Input */}
+          <div className="w-full">
+            <SearchTxns onSearch={handleSearch} value={searchTerm} />
+          </div>
 
-  {/* Transaction Count */}
-  <div className="flex justify-between items-center bg px-1">
-    <div className="text-sm text-white">
-      {filteredTransactions.length} transactions found
-    </div>
-  </div>
-</CardContent>
+          {/* Filters */}
+          {!isLoading && !isError && transactionsData?.items && (
+            <TransactionFilters 
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onCategoryChange={handleCategoryChange}
+              dateRange={dateRange}
+              onDateRangeChange={handleDateRangeChange}
+              onResetFilters={handleResetFilters}
+            />
+          )}
+
+          {/* Transaction Count */}
+          <div className="flex justify-between items-center px-1">
+            <div className="text-sm text-muted-foreground">
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Loading transactions...
+                </span>
+              ) : (
+                `${filteredTransactions.length} transactions found`
+              )}
+            </div>
+          </div>
+        </CardContent>
 
       </Card>
       <div className="bg-[var(--primary)] rounded-xl shadow-white w-full overflow-hidden">
-        {filteredTransactions.length === 0 ? (
+        {isLoading ? (
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-12 px-4 text-center">
+              <div className="p-3 rounded-full bg-white/10 mb-3 shadow-white">
+                <Loader2 className="h-6 w-6 text-white opacity-70 animate-spin" />
+              </div>
+              <h3 className="text-lg font-medium text-white">Loading transactions...</h3>
+              <p className="text-white opacity-50 max-w-sm">Please wait while we fetch your transaction data.</p>
+            </CardContent>
+          </Card>
+        ) : isError ? (
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-12 px-4 text-center">
+              <div className="p-3 rounded-full bg-white/10 mb-3 shadow-white">
+                <AlertCircle className="h-6 w-6 text-white opacity-70" />
+              </div>
+              <h3 className="text-lg font-medium text-white">Error loading transactions</h3>
+              <p className="text-white opacity-50 max-w-sm">There was a problem fetching your transaction data. Please try again later.</p>
+            </CardContent>
+          </Card>
+        ) : filteredTransactions.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12 px-4 text-center">
               <div className="p-3 rounded-full bg-white/10 mb-3 shadow-white">
@@ -92,7 +184,7 @@ export default function Transactions() {
                 </TableRow>
               </TableHeader>
               <TableBody className="bg-[var(--card)] text-primary rounded-b-xl">
-                {filteredTransactions.map((txn) => (
+                {filteredTransactions.map((txn: Transaction) => (
                   <TxnItem key={txn.id} transaction={txn} />
                 ))}
               </TableBody>

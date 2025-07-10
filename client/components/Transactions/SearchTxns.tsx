@@ -3,10 +3,11 @@ import { Search } from 'lucide-react'
 
 interface SearchTxnsProps {
   onSearch: (term: string) => void
+  value?: string
 }
 
-export default function SearchTxns({ onSearch }: SearchTxnsProps) {
-  const [searchInput, setSearchInput] = useState('')
+export default function SearchTxns({ onSearch, value = '' }: SearchTxnsProps) {
+  const [searchInput, setSearchInput] = useState(value)
   
   // Debounce search input to avoid excessive filtering
   useEffect(() => {
