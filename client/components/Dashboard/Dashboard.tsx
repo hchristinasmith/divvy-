@@ -21,14 +21,12 @@ function Dashboard() {
     Utilities: 150,
     // Add other categories and their budget targets here
   }
-
   const {
     data: accountsData,
     isLoading: isLoadingAccounts,
     isError: isErrorAccounts,
     error: errorAccounts,
   } = useAllAccounts()
-  console.log('accountsData:', accountsData)
 
   const {
     data: transactionsData,
@@ -36,7 +34,6 @@ function Dashboard() {
     isError: isErrorTransactions,
     error: errorTransactions,
   } = useAllTransactions()
-  console.log('transactionsData:', transactionsData)
 
   if (isLoadingAccounts) return <Skeleton className="h-10 w-full rounded-xl" />
   if (isErrorAccounts)
@@ -102,25 +99,49 @@ function Dashboard() {
               selectedDays={selectedDays}
               onSelect={setSelectedDays}
             />
-          </div>{' '}
-          <SpendingBreakdown transactions={transactionsData.items} />
-          <Card className="shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold">
-                Monthly Overview
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ActualVTarget
-                transactions={transactionsData.items}
-                targets={targets}
-              />
-            </CardContent>
-          </Card>
+          </div>
+          {(() => {
+            // Filter transactions based on selected accounts and time period
+            const filteredTransactions = transactionsData.items.filter(
+              (transaction) => {
+                // If no accounts are selected, show all transactions
+                if (selectedAccountIds.length === 0) return true;
+
+                // Otherwise, only show transactions from selected accounts
+                return selectedAccountIds.includes(transaction.account_id);
+              },
+            ).filter((transaction) => {
+
+              // Filter by selected time period
+              const txDate = new Date(transaction.date);
+              const cutoffDate = new Date();
+              cutoffDate.setDate(cutoffDate.getDate() - selectedDays);
+              return txDate >= cutoffDate;
+            });
+
+            return (
+              <>
+                <SpendingBreakdown transactions={filteredTransactions} />
+                <Card className="shadow-sm">
+                  <CardHeader>
+                    <CardTitle className="text-xl font-semibold">
+                      Monthly Overview
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ActualVTarget
+                      transactions={filteredTransactions}
+                      targets={targets}
+                    />
+                  </CardContent>
+                </Card>
+              </>
+            );
+          })()}
         </div>
       )}
     </LayoutWrapper>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

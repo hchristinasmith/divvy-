@@ -20,7 +20,10 @@ router.get('/', async (req, res) => {
         'transactions.category_name',
         'transactions.category_id',
         'transactions.category_group_id',
+        'transactions.category_group_name',
         'transactions.merchant_name',
+        'transactions.merchant_website',
+        'transactions.merchant_logo',
         'accounts.name as account_name',
         'accounts.connection_name as institution_name',
       )

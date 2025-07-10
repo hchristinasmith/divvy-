@@ -36,6 +36,10 @@ export interface Transaction {
   merchant_website: string
   merchant_logo: string
   
+  // Joined fields from accounts table
+  account_name?: string
+  institution_name?: string
+
   // Flags
   is_subscription?: boolean
 }

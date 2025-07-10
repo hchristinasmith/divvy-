@@ -1,15 +1,10 @@
 import { useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { ChartPie, X, ArrowLeft } from 'lucide-react'
-import type { Transaction as BaseTransaction } from 'models/transactions.ts'
-import { ScrollArea } from '../ui/scroll-area'
+import type { Transaction } from 'models/transactions.ts'
+import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
-
-// Extend the Transaction type to include account_name which is added by the join in the API
-interface Transaction extends BaseTransaction {
-  account_name?: string;
-}
 
 interface SpendingBreakdownProps {
   transactions: Transaction[]
