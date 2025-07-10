@@ -35,12 +35,6 @@ export const menuItems = [
   {
     title: 'Manage Subscriptions',
     url: '/subscriptions',
-    icon: CalendarSearch,
-    description: 'Manage your subscriptions',
-  },
-  {
-    title: 'Subscriptions Tracker',
-    url: '/subscriptions-tracker',
     icon: CalendarClock,
     description: 'Track your recurring expenses',
   },

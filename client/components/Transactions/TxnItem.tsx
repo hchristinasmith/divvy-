@@ -23,6 +23,8 @@ export default function TxnItem({ transaction }: Props) {
   const [formData, setFormData] = useState({
     description: transaction.description,
     category: transaction.category_group_name,
+    is_subscription: transaction.is_subscription || false,
+    cycle: transaction.cycle || 'monthly'
   })
   const [editing, setEditing] = useState(false)
   const [detailsOpen, setDetailsOpen] = useState(false)
@@ -52,15 +54,43 @@ export default function TxnItem({ transaction }: Props) {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
-    const { id, value } = e.target
-    setFormData({ ...formData, [id]: value })
+    const { id, value, type } = e.target
+    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+    setFormData({ ...formData, [id]: newValue })
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // In a real app, this would call an API to update the transaction
+    // Call API to update the transaction
     console.log('Updating transaction:', { id: transaction.id, ...formData })
-    setEditing(false)
+    
+    // In a real app, this would call an API to update the transaction
+    fetch(`/api/v1/transactions/${transaction.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        category_name: formData.category,
+        is_subscription: formData.is_subscription,
+        cycle: formData.is_subscription ? formData.cycle : null
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to update transaction')
+        }
+        return response.json()
+      })
+      .then(() => {
+        setEditing(false)
+        // Force a refresh of the page to show updated data
+        window.location.reload()
+      })
+      .catch(error => {
+        console.error('Error updating transaction:', error)
+        alert('Failed to update transaction. Please try again.')
+      })
   }
 
   return (
@@ -106,23 +136,52 @@ export default function TxnItem({ transaction }: Props) {
         </TableCell>
         <TableCell className="py-3">
           {editing ? (
-            <select
-              id="category"
-              value={formData.category}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white focus:border-white/40 focus:ring-1 focus:ring-white/40 focus:outline-none"
-            >
-              {Object.entries(categories).flatMap(([group, subcategories]) => [
-                <option key={group} disabled className="font-semibold">
-                  {group}
-                </option>,
-                ...subcategories.map(sub => (
-                  <option key={sub} value={sub}>
-                    {sub}
-                  </option>
-                ))
-              ])}
-            </select>
+            <div className="flex flex-col gap-2">
+              <select
+                id="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="w-full rounded-xl border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white focus:border-white/40 focus:ring-1 focus:ring-white/40 focus:outline-none"
+              >
+                {Object.entries(categories).flatMap(([group, subcategories]) => [
+                  <option key={group} disabled className="font-semibold">
+                    {group}
+                  </option>,
+                  ...subcategories.map(sub => (
+                    <option key={sub} value={sub}>
+                      {sub}
+                    </option>
+                  ))
+                ])}
+              </select>
+              
+              <div className="flex items-center gap-2 mt-1">
+                <label className="flex items-center gap-2 text-sm cursor-pointer">
+                  <input
+                    type="checkbox"
+                    id="is_subscription"
+                    checked={formData.is_subscription}
+                    onChange={handleChange}
+                    className="rounded border-white/20 bg-white/10 text-[var(--primary)] focus:ring-[var(--primary)] focus:ring-offset-0"
+                  />
+                  <span>Subscription</span>
+                </label>
+              </div>
+              
+              {formData.is_subscription && (
+                <select
+                  id="cycle"
+                  value={formData.cycle}
+                  onChange={handleChange}
+                  className="w-full rounded-xl border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white focus:border-white/40 focus:ring-1 focus:ring-white/40 focus:outline-none mt-1"
+                >
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="quarterly">Quarterly</option>
+                  <option value="yearly">Yearly</option>
+                </select>
+              )}
+            </div>
           ) : (
             <span 
               className="px-2 py-1 rounded-xl text-white text-sm inline-block shadow-white"

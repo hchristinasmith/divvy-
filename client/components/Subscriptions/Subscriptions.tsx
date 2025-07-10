@@ -78,12 +78,6 @@ export function Subscriptions() {
   return (
     <LayoutWrapper>
       <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center gap-2 bg-[var(--primary)] text-white px-3 py-2 rounded rounded-full shadow-white mb-4 w-fit">
-          <CalendarClock size={18} />
-          <h2 className="text-lg font-semibold">Subscriptions</h2>
-        </div>
-
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-6 mb-6">
           <div className="bg-[var(--card)] rounded-xl p-5 shadow-white">
