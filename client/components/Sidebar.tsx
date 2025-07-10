@@ -60,7 +60,8 @@ export default function Sidebar({
       <div className="shadow-md">
         <div
           className={clsx(
-            'fixed top-0 left-0 h-full w-[260px] p-6 bg-sidebar text-sidebar-foreground z-40',
+            'fixed top-0 left-0 h-full w-[260px] p-6 z-40',
+            'bg-sidebar text-sidebar-foreground',
             'transition-transform duration-300 ease-in-out transform rounded-r-2xl flex flex-col',
             isOpen ? 'translate-x-0' : '-translate-x-full',
           )}
@@ -80,8 +81,8 @@ export default function Sidebar({
                   clsx(
                     'flex items-start gap-3 rounded-lg px-3 py-2 transition-colors group',
                     isActive
-                      ? 'bg-accent text-accent-foreground shadow-sm'
-                      : 'hover:bg-muted hover:text-foreground text-foreground',
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground shadow-sm'
+                      : 'hover:bg-sidebar-border hover:text-sidebar-foreground text-sidebar-foreground',
                   )
                 }
               >
@@ -102,8 +103,8 @@ export default function Sidebar({
           onClick={onToggle}
           aria-label="Toggle sidebar"
           className={clsx(
-            'fixed top-4 left-0 z-50 h-10 w-10 text-primary-background',
-            'rounded-r-xl  flex items-center justify-center transition-all duration-300',
+            'fixed top-4 left-0 z-50 h-10 w-10 bg-sidebar-primary text-sidebar-primary-foreground',
+            'rounded-r-xl flex items-center justify-center transition-all duration-300',
             isOpen ? 'ml-[250px]' : 'ml-0',
           )}
         >

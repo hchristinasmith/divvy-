@@ -12,7 +12,6 @@ export async function getAllAccounts(): Promise<Item[]> {
 export async function getAllTransactions() {
   try {
     const response = await request.get(`${rootURL}/transactions`)
-    console.log('API response (transactions):', response.body)
     
     // Check if response body is empty or not an array
     if (!response.body || !Array.isArray(response.body)) {

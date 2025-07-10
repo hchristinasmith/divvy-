@@ -50,7 +50,7 @@ body {
   --radius: 0.625rem;
 
   /* Backgrounds & Surface */
-  --background: oklch(96.5% 0.025 330); /* soft pinkish-white */
+  --background: oklch(0.9323 0.0357 0); /* soft pinkish-white */
   --foreground: oklch(0.38 0.02 30); /* soft chocolate brown */
 
   --card: oklch(94% 0.04 335); /* pale lavender-pink */
@@ -85,7 +85,7 @@ body {
   --chart-5: oklch(60% 0.06 30); /* warm brown */
 
   /* Sidebar styling */
-  --sidebar: oklch(96% 0.03 330); /* light pastel pink */
+  --sidebar: oklch(0.9842 0.0357 0); /* light pastel pink */
   --sidebar-foreground: oklch(0.38 0.02 30);
   --sidebar-primary: oklch(82% 0.065 340);
   --sidebar-primary-foreground: oklch(0.98 0.015 330);
@@ -94,6 +94,7 @@ body {
   --sidebar-border: oklch(92% 0.012 30);
   --sidebar-ring: oklch(60% 0.025 30);
 }
+
 .dark {
   --background: oklch(22% 0.08 35); /* deep cocoa brown */
   --foreground: oklch(94% 0.02 340); /* soft rosy-pink off-white */
